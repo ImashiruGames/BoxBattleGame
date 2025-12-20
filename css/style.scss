@@ -112,6 +112,22 @@ main{
     }
 }
 
+/* 画面を揺らすアニメーションの定義 */
+@keyframes shake {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-5px, -5px); }
+    30% { transform: translate(5px, 5px); }
+    50% { transform: translate(-5px, 5px); }
+    70% { transform: translate(5px, -5px); }
+    90% { transform: translate(-5px, 0); }
+    100% { transform: translate(0, 0); }
+}
+
+/* このクラスがついた時に揺れる */
+.shake-effect {
+    animation: shake 0.5s ease-in-out; /* 0.5秒かけて揺れる */
+}
+
 /* このクラスがつくとアニメーションする */
 .slash-effect {
     animation: slash 0.3s ease-out infinite; /* 0.3秒で実行 */

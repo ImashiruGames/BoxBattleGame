@@ -1,33 +1,10 @@
-
-const turn = document.getElementById("turn");
-
-// HPバー取得
-const playerHP = document.getElementById("player-hp");
-const enemyHP = document.getElementById("enemy-hp");
-const p1Remain = document.getElementById("p1-remain-counter");
-const p2Remain = document.getElementById("p2-remain-counter");
-
-let currentPlayerHP = 100;
-let currentEnemyHP = 100;
-
-// メインステージ
-const mainstage = document.getElementById("mainStage");
-// ステージの広さ
-var stageX = 10;
-var stageY = 7;
-mainstage.style.width = `${70*stageX}px`;
-mainstage.style.height = `${70*stageY}px`;
-
-const p1 = document.getElementById("p1_skillname");
-const p2 = document.getElementById("p2_skillname");
-
-
-const deque = document.getElementById("deque");
+mainstage.style.width = `${boxsize*stageX}px`;
+mainstage.style.height = `${boxsize*stageY}px`;
 
 for(let i=0;i<stageY;i++){
     for(let j=0;j<stageX;j++){
         let box = document.createElement("div");
-        box.innerText = stageX*i+j; //←箱のインデックス番号がわかりやすいように
+        // box.innerText = stageX*i+j; //←箱のインデックス番号がわかりやすいように
         box.x = j+1;
         box.y = stageY-i;
         box.whose = 0;
@@ -46,7 +23,6 @@ for(let i=0;i<stageY;i++){
 
 // p1攻撃処理
                 if(targetBox.whose === 0 && myturn){
-                    turnindex.push(checkIndex);
                     targetBox.whose = 1;
                     targetBox.classList.add("p1color");
                     turn.innerText = "2Pのターン"
@@ -57,62 +33,19 @@ for(let i=0;i<stageY;i++){
                     d = checkyoko(checkIndex,targetBox.whose);
 
     //ダメージ管理部分↓
-
                     let damage = 0;
-
                     damage = SkillList[p1.skill](a,b,c,d);
-                    // if(p1.skill === 0){damage = fatalDamage(Math.max(a,b,c,d));}
-                    // else if(p1.skill === 1){damage = NormalAttack(Math.max(a,b,c,d));}
-                    // else if(p1.skill === 2){damage = MiniAttack(Math.max(a,b,c,d));}
-                    // else if(p1.skill === 3){damage = debugattack(Math.max(a,b,c,d));}
+                    ApplyDamageTo("2P",damage);
 
-                    if(damage>0){
-                        damage = Math.min(damage,currentEnemyHP)
-                        // 体力減ってるようなアニメーション（文字）
-                        for(i=0;i<5;i++){
-                            currentEnemyHP -= Math.floor(damage/5);
-                            p2Remain.innerText = currentEnemyHP;
-                            await sleep(5);
-                        }
-                        currentEnemyHP -= damage%5;
-                        p2Remain.innerText = currentEnemyHP
-
-                        if(currentEnemyHP <= 20){
-                            setTimeout(()=>{
-                                p2Remain.style.color = "red";
-                                document.getElementById("enemy-hp").style.backgroundColor = "red";
-                            },500)
-                        }
-                        else if(currentEnemyHP <= 50){
-                            setTimeout(()=>{
-                                p2Remain.style.color = "orange";
-                                document.getElementById("enemy-hp").style.backgroundColor = "yellow";
-                            },500)
-                        }
-                        if(currentEnemyHP <= 0){
-                            currentEnemyHP = 0;
-                            winMessage.innerText = "1Pの勝ち";
-                            winscreen.style.opacity = 1;
-                            winscreen.style.pointerEvents = "auto";
-                            deque.style.pointerEvents = "none";
-                            saveBtn.onclick = function() {
-                            downloadBattleLog("1P","2P","1P");
-                            };
-                        }
-
-                        enemyHP.style.width = `${currentEnemyHP}%`;
-                    }
-                    
+                    turnindex.push(checkIndex);
                     damagelist.push(damage);
     //ダメージ管理部分↑
-
                     myturn = false;
                     break;
                 }
 
 // p2攻撃処理
                 else if(targetBox.whose === 0 && !myturn){
-                    turnindex.push(checkIndex);
                     targetBox.whose = 2;
                     targetBox.classList.add("p2color");
                     turn.innerText = "1Pのターン";
@@ -125,51 +58,10 @@ for(let i=0;i<stageY;i++){
     //ダメージ管理部分↓
 
                     let damage = 0;
-
                     damage = SkillList[p2.skill](a,b,c,d);
-                    // if(p2.skill === 0){damage = fatalDamage(Math.max(a,b,c,d));}
-                    // else if(p2.skill === 1){ damage = NormalAttack(Math.max(a,b,c,d));}
-                    // else if(p2.skill === 3){ damage = debugattack(Math.max(a,b,c,d));}
-                    // else{damage = MiniAttack(Math.max(a,b,c,d));}
+                    ApplyDamageTo("1P",damage);
 
-                    if(damage>0){
-                        damage = Math.min(damage,currentPlayerHP)
-                        
-                        for(i=0;i<5;i++){
-                            currentPlayerHP -= Math.floor(damage/5);
-                            p1Remain.innerText = currentPlayerHP;
-                            await sleep(5);
-                        }
-                        currentPlayerHP -= damage%5;
-                        p1Remain.innerText = currentPlayerHP;
-
-                        if(currentPlayerHP <= 20){
-                            setTimeout(()=>{
-                                p1Remain.style.color = "red";
-                                document.getElementById("player-hp").style.backgroundColor = "red";
-                            },500)
-                        }
-                        else if(currentPlayerHP <= 50){
-                            setTimeout(()=>{
-                                p1Remain.style.color = "orange";
-                                document.getElementById("player-hp").style.backgroundColor = "yellow";
-                            },500)
-                        }
-// 勝利処理
-                        if(currentPlayerHP <= 0){
-                            currentPlayerHP = 0;
-                            winMessage.innerText = "2Pの勝ち";
-                            winscreen.style.opacity = 1;
-                            winscreen.style.pointerEvents = "auto";
-                            deque.style.pointerEvents = "none";
-                            saveBtn.onclick = function() {
-                            downloadBattleLog("1P","2P","1P");
-                            };
-                        }
-
-                        playerHP.style.width = `${currentPlayerHP}%`;
-                    }
-
+                    turnindex.push(checkIndex);
                     damagelist.push(damage);
     //ダメージ管理部分↑
                     myturn = true;
@@ -199,7 +91,6 @@ for(let i=0;i<stageY;i++){
                 }
 
                 hint(checkIndex);
-                
             }
             // 
             // let checkIndex = targetX-1;
@@ -232,3 +123,67 @@ for(let i=0;i<stageY;i++){
         mainstage.appendChild(box);
     }
 }
+
+// HP関連　0になったときのwin画面出す処理も今は入ってる
+async function ApplyDamageTo(target,damage){
+    let currentHP,remainElem,hpBar;
+    // targetは"1P""2P"のどちらかを受け取る
+    if(target==="1P"){
+        currentHP = currentPlayerHP;
+        remainElem = p1Remain;
+        hpBar = playerHP;
+    }
+    else{
+        currentHP = currentEnemyHP;
+        remainElem = p2Remain;
+        hpBar = enemyHP;
+    }
+
+    if(damage>0){
+        damage = Math.min(damage,currentHP)
+        
+        // HP減ってる感出すロジック
+        for(i=0;i<5;i++){
+            currentHP -= Math.floor(damage/5);
+            remainElem.innerText = currentHP;
+            await sleep(5);
+        }
+        currentHP -= damage%5;
+        remainElem.innerText = currentHP;
+        // HPを減らし終わった
+
+        if(currentHP <= 20){
+            setTimeout(()=>{
+                remainElem.style.color = "red";
+                hpBar.style.backgroundColor = "red";
+            },500)
+        }
+        else if(currentHP <= 50){
+            setTimeout(()=>{
+                remainElem.style.color = "orange";
+                hpBar.style.backgroundColor = "yellow";
+            },500)
+        }
+// 勝利処理
+        if(currentHP <= 0){
+            currentHP = 0;
+            winMessage.innerText = `${target}の勝ち"`
+            winscreen.style.opacity = 1;
+            winscreen.style.pointerEvents = "auto";
+            deque.style.pointerEvents = "none";
+            saveBtn.onclick = function() {
+            downloadBattleLog("1P","2P",target);
+            };
+        }
+
+        if(target==="1P"){
+            currentPlayerHP = currentHP;
+        }
+        else{
+            currentEnemyHP = currentHP;
+        }
+
+        hpBar.style.width = `${currentHP}%`;
+    }
+}
+BoardController.js

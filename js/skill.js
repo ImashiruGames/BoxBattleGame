@@ -1,4 +1,11 @@
-const Debug = document.getElementById("debugger");
+function bodyshake(){
+    body.classList.add("shake-effect");
+
+    setTimeout(function() {
+        body.classList.remove("shake-effect");
+    }, 500);
+}
+
 let skilllist = [
     ["恐怖の一撃","4つ以上そろえるまでダメージが出せない代わりに大ダメージ"],
     ["駆け出しの攻撃","3つ以上そろえるとダメージを与える（通常）"],
@@ -17,14 +24,17 @@ let SkillList = [
 ];
 
 // スキルは引数を、\/|-の順で入れる
+// 
 
 function fatalDamage(a,b,c,d){
-    count = Math.max(a,b,c,d)
+    let count = Math.max(a,b,c,d)
     if(count >= 5){
+        bodyshake();
         // Debug.innerText += "痛恨の一撃！！！！(100ダメージ)";
         return 100;
     }
     else if(count >= 4){
+        bodyshake();
         // Debug.innerText += "手痛い攻撃！(50ダメージ)";
         return 50;
     }
@@ -34,7 +44,7 @@ function fatalDamage(a,b,c,d){
 }
 
 function NormalAttack(a,b,c,d){
-    count = Math.max(a,b,c,d)
+    let count = Math.max(a,b,c,d)
     if(count >= 5){
         // Debug.innerText += " 大攻撃！(80ダメージ)";
         return 80; // 5個以上なら大ダメージ
@@ -53,7 +63,7 @@ function NormalAttack(a,b,c,d){
 }
 
 function MiniAttack(a,b,c,d){
-    count = Math.max(a,b,c,d)
+    let count = Math.max(a,b,c,d)
     if(count >= 5){
         // Debug.innerText += " ミニ大攻撃！(50ダメージ)";
         return 50; // 5個以上なら大ダメージ
@@ -76,12 +86,12 @@ function MiniAttack(a,b,c,d){
 }
 
 function debugattack(a,b,c,d){
-    return 44;
+    return 1;
 }
 
 function Backslash(a,b,c,d){
-    count = Math.max(a,b,c,d);
-    bonus = 1;
+    let count = Math.max(a,b,c,d);
+    let bonus = 1;
     // aが最も大きい場合、倍率を1.2にする。
     if(a===count){
         bonus = 1.2;

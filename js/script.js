@@ -6,14 +6,6 @@ const sleep = (time) => new Promise((resolve) => setTimeout(resolve,time));
 //一段目に置いている自分のブロックの数、攻撃力が1あがる。
 //攻撃力nとは、1.n倍の威力で攻撃することにしたい
 
-
-// ターン経過のおさらいを見る用の保存リスト
-let turnindex = [];
-let damagelist = [];
-let skillchecklist = [];
-
-let myturn = true;
-
 deque.addEventListener("click",function(){
 
     if(turnindex.length === 0) return;
@@ -49,15 +41,6 @@ deque.addEventListener("click",function(){
 })
 
 let boxes = document.querySelectorAll(".box");
-
-// スラッシュ(/),バックスラッシュ(\),縦（|）,横（-）の処理の意味
-function sbty(a,b,c,d){
-    let damage = 0;
-
-
-    
-    return Math.max(a,b,c,d);
-}
 
 // やりたいこと→Effectbuttonを作って、それを押すことでエフェクトが確認できる
 

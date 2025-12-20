@@ -15,7 +15,7 @@ function downloadBattleLog(p1Name,p2Name,winnerName) {
     };
 
     // 2. データをJSON形式（文字列）に変換する
-    // JSON.stringify(データ, null, 2) と書くと、見やすく整形されます
+    // JSON.stringify(データ, null, 2) と書くと、見やすく整形されるらしい
     const jsonString = JSON.stringify(logData, null, 2);
 
     // 3. ファイルの「種（Blob）」を作る
