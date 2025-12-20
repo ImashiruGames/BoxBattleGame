@@ -94,7 +94,7 @@ for(let i=0;i<stageY;i++){
                             winMessage.innerText = "1Pの勝ち";
                             winscreen.style.opacity = 1;
                             winscreen.style.pointerEvents = "auto";
-
+                            deque.style.pointerEvents = "none";
                             saveBtn.onclick = function() {
                             downloadBattleLog("1P","2P","1P");
                             };
@@ -155,12 +155,13 @@ for(let i=0;i<stageY;i++){
                                 document.getElementById("player-hp").style.backgroundColor = "yellow";
                             },500)
                         }
+// 勝利処理
                         if(currentPlayerHP <= 0){
                             currentPlayerHP = 0;
                             winMessage.innerText = "2Pの勝ち";
                             winscreen.style.opacity = 1;
                             winscreen.style.pointerEvents = "auto";
-
+                            deque.style.pointerEvents = "none";
                             saveBtn.onclick = function() {
                             downloadBattleLog("1P","2P","1P");
                             };
