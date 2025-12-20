@@ -10,7 +10,6 @@ let SkillList = [
     NormalAttack,
     MiniAttack];
 
-
 // スキルは引数を、\/|-の順で入れる
 
 function fatalDamage(a,b,c,d){

@@ -1,10 +1,13 @@
 const p1Select = document.getElementById("p1-select");
 const p2Select = document.getElementById("p2-select");
 
+//playerskill選択←あとで、プレイヤーに自由に選択できるようにさせる
+p1.skill = 1;
+p2.skill = 1;
 
 initSkillSelector();
 //下部にスキルの詳細をつける
-DamageList();
+initDamageList();
 //
 SkillDetail();
 
@@ -30,32 +33,46 @@ function initSkillSelector(){
 
     p1Select.addEventListener("change",function(){
         p1.skill = parseInt(this.value);
-        DamageList();
+        DamageList(1);
         SkillDetail();
     })
     p2Select.addEventListener("change",function(){
         p2.skill = parseInt(this.value);
-        DamageList();
+        DamageList(2);
         SkillDetail();
     })
-
 }
 
-
-function DamageList(){
+function initDamageList(){
     let dl = document.getElementsByClassName("damagelist").item(0);
     dl.style.width = `${stageX*70}px`;
 
     for(let i=0;i<5;i++){
         let listElement = document.createElement("p");
         listElement.innerText = `${5-i}列：${SkillList[p1.skill](5-i,5-i,5-i,5-i)}`;
+        listElement.classList.add("p1damagelist");
         document.getElementById("p1attack").appendChild(listElement);
     }
 
     for(let j=0;j<5;j++){
         let listElement = document.createElement("p");
         listElement.innerText = `${5-j}列：${SkillList[p2.skill](5-j,5-j,5-j,5-j)}`;
+        listElement.classList.add("p2damagelist");
         document.getElementById("p2attack").appendChild(listElement);
+    }
+}
+function DamageList(playernum){
+    if(playernum===1){
+        for(let i=0;i<5;i++){
+            let listElement = document.getElementsByClassName(`p1damagelist`).item(i);
+            listElement.innerText = `${5-i}列：${SkillList[p1.skill](5-i,5-i,5-i,5-i)}`
+        }
+    }
+    if(playernum===2){
+        for(let i=0;i<5;i++){
+            let listElement = document.getElementsByClassName(`p2damagelist`).item(i);
+            listElement.innerText = `${5-i}列：${SkillList[p2.skill](5-i,5-i,5-i,5-i)}`
+        }
     }
 }
 function SkillDetail(){

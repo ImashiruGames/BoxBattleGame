@@ -20,9 +20,7 @@ mainstage.style.height = `${70*stageY}px`;
 
 const p1 = document.getElementById("p1_skillname");
 const p2 = document.getElementById("p2_skillname");
-//playerskill選択←あとで、プレイヤーに自由に選択できるようにさせる
-p1.skill = 2;
-p2.skill = 1;
+
 
 const deque = document.getElementById("deque");
 
