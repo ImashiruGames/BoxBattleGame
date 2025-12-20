@@ -22,25 +22,29 @@ let skillFunctions = [
     Backslash,
     Poisoning
 ];
+let p1damageListText = [
+    "","","","",""
+]
+let p2damageListText = [
+    "","","","",""
+]
 
 // スキルは引数を、\/|-の順で入れる
 // 
 
 function fatalDamage(diag1,diag2,tate,yoko){
     let count = Math.max(diag1,diag2,tate,yoko)
+    let damage = 0;
     if(count >= 5){
-        bodyshake();
         // Debug.innerText += "痛恨の一撃！！！！(100ダメージ)";
-        return 100;
+        damage = 100;
     }
     else if(count >= 4){
-        bodyshake();
         // Debug.innerText += "手痛い攻撃！(50ダメージ)";
-        return 50;
+        damage = 50;
     }
-    else{
-        return 0;
-    }
+
+
 }
 
 function NormalAttack(diag1,diag2,tate,yoko){

@@ -7,14 +7,13 @@ for(let i=0;i<STAGE_Y;i++){
         // box.innerText = stageX*i+j; //←箱のインデックス番号がわかりやすいように
         box.x = j+1;
         box.y = STAGE_Y-i;
-        box.state = 0;
+        box.state = BOX_STATE.EMPTY;
         box.classList.add("box");
 
         box.addEventListener("click",async function(){
             // Debug.innerText = `座標は(${this.x},${this.y})`;
 
             let targetX = this.x;
-            gridCells[checkIndex].classList.remove("bigger");
 
             // Debug.innerText = "";
             for(let k=1;k<=STAGE_Y;k++){
@@ -22,8 +21,9 @@ for(let i=0;i<STAGE_Y;i++){
                 let targetBox = gridCells[checkIndex];
 
 // p1攻撃処理
-                if(targetBox.state === 0 && isP1Turn){
-                    targetBox.state = 1;
+                if(targetBox.state === BOX_STATE.EMPTY && isP1Turn){
+                    gridCells[checkIndex].classList.remove("bigger");
+                    targetBox.state = BOX_STATE.P1;
                     targetBox.classList.add("p1color");
                     turnEl.innerText = "2Pのターン"
 
@@ -45,8 +45,9 @@ for(let i=0;i<STAGE_Y;i++){
                 }
 
 // p2攻撃処理
-                else if(targetBox.state === 0 && !isP1Turn){
-                    targetBox.state = 2;
+                else if(targetBox.state === BOX_STATE.EMPTY && !isP1Turn){
+                    gridCells[checkIndex].classList.remove("bigger");
+                    targetBox.state = BOX_STATE.P2;
                     targetBox.classList.add("p2color");
                     turnEl.innerText = "1Pのターン";
 
@@ -67,7 +68,11 @@ for(let i=0;i<STAGE_Y;i++){
                     isP1Turn = true;
                     break;
                 }
-            }  
+            }
+
+            setTimeout(()=>{
+                updateHint(this.x); 
+            },5);
 
 // デバッグはここに置こう
             // Debug.innerText = `${turnindex}　`;
@@ -76,25 +81,7 @@ for(let i=0;i<STAGE_Y;i++){
 
         box.addEventListener("mouseover",function(){
 
-            //一番下を探す
-            let targetX = this.x - 1;
-
-            // Debug.innerText+= `${boxes[targetX].state}`;
-
-            // 一番上に埋まってたら、何もしない
-            if(gridCells[targetX].state != 0){
-                return;}
-            else{
-                checkIndex = STAGE_X*(STAGE_Y-1) + targetX;
-                while(gridCells[checkIndex].state!=0 && checkIndex>0){
-                    checkIndex -= STAGE_X;
-                }
-
-                hint(checkIndex);
-            }
-            // 
-            // let checkIndex = targetX-1;
-            // x→x+stageX→x+stageX*2→...→x+stageX*i
+            updateHint(this.x);
         })
 
         box.addEventListener("mouseleave",function(){
@@ -105,11 +92,11 @@ for(let i=0;i<STAGE_Y;i++){
             // Debug.innerText+= `${boxes[targetX].state}`;
 
             // 一番上に埋まってたら、何もしない
-            if(gridCells[targetX].state != 0){
+            if(gridCells[targetX].state != BOX_STATE.EMPTY){
                 return;}
             else{
                 checkIndex = STAGE_X*(STAGE_Y-1) + targetX;
-                while(gridCells[checkIndex].state!=0 && checkIndex>0){
+                while(gridCells[checkIndex].state!=BOX_STATE.EMPTY && checkIndex>0){
                     checkIndex -= STAGE_X;
                 }
 
@@ -186,4 +173,21 @@ async function ApplyDamageTo(target,damage){
         hpBar.style.width = `${currentHP}%`;
     }
 }
-BoardController.js
+function updateHint(x){
+            //一番下を探す
+            let targetX = x - 1;
+
+            // 一番上に埋まってたら、何もしない
+            if(gridCells[targetX].state != BOX_STATE.EMPTY){
+                return;
+            }
+            let checkIndex = STAGE_X*(STAGE_Y-1) + targetX;
+                
+            while(gridCells[checkIndex].state!=BOX_STATE.EMPTY && checkIndex>=0){   
+                checkIndex -= STAGE_X;
+            }
+
+            if(checkIndex >= 0){
+                hint(checkIndex);
+            }
+}
