@@ -1,0 +1,201 @@
+body{   
+    user-select: none;
+}
+
+main{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    .box{
+        width: 69.8px;
+        height: 70px;
+        border-radius: 6px;
+        border: 1px solid black;
+    }
+    .bigger{
+        animation: big 0.5s infinite alternate;
+    }
+}
+
+.p1color{
+    background-color: yellow;
+}
+.p2color{
+    background-color: orange;
+}
+
+.damagelist{
+    height: 8rem;
+    display: flex;
+    border: 1px solid black;
+    #p1statusbox{
+        border: 2px solid yellow;
+    }
+    #p2statusbox{
+        border: 2px solid orange;
+    }
+    .status{
+        display: grid;
+        width: 50%;
+        grid-template-columns: 30% 1fr;
+        grid-template-rows: 2rem 1fr;
+        grid-template-areas: 
+        "attacklist skillname"
+        "attacklist description";
+        .attacklist{
+            grid-area: attacklist;
+            padding: 1rem;
+        }
+        .skillname{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            grid-area: skillname;
+            font-weight: 700;
+            text-align: center;
+        }
+        .description{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid pink;
+            grid-area: description;
+        }
+    }
+}
+
+@keyframes big{
+    0%{
+        transform: scale(1.0);
+        opacity: 0.5;
+    }   
+    25%,100%{
+        transform: scale(1.05);
+        opacity: 0.5;
+    } 
+}
+
+/* 切撃のエフェクト */
+@keyframes slash {
+    0% {
+        background-color: transparent;
+        transform: scale(1);
+    }
+    50% {
+        background-color: white; /* 一瞬光る */
+        transform: scale(1.2);   /* ちょっと大きくなる */
+    }
+    100% {
+        background-color: transparent;
+        transform: scale(1);
+    }
+}
+
+/* このクラスがつくとアニメーションする */
+.slash-effect {
+    animation: slash 0.3s ease-out infinite; /* 0.3秒で実行 */
+}
+
+// .skillcard{
+// border: 1px solid black;
+// border-radius: 0.2rem;
+// position: absolute;
+// height: 300px;
+// width: 200px;
+// background-color: rgb(229, 209, 56);
+
+// display: flex;
+// flex-direction: column;
+// .skillname{
+//     width: 100%;
+//     padding: 0.4rem 0 0.4rem;
+//     text-align: center;
+//     font-weight: bolder;
+// }
+// .skilldetail{
+//     width: 100%;
+//     padding: 0.5rem 0 0.5rem;
+// }
+// table{
+//     width: 70%;
+    
+//     td{
+//         text-align: left;
+
+//     }
+// }
+// }
+
+#debugger{
+    margin-left: 10px;
+}
+
+#animationBox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 68px;
+    height: 70px;
+    background-color: purple;
+    border: 1px solid purple;
+    display: none;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.hp{
+    display: flex;
+    margin-top: 10px;
+    #p1-remain-counter{
+        font-weight: bold;
+        color: black;
+    }
+    #p2-remain-counter{
+        font-weight: bold;
+        color: black;
+    }
+}
+/* HPバーの外枠（背景） */
+.hp-container {
+    margin: 0 20px 0 20px;
+    width: 300px;        /* バーの全体の長さ */
+    height: 20px;        /* バーの太さ */
+    background-color: #333; /* 減った部分の色（背景色） */
+    border: 2px solid #000; /* 枠線 */
+    margin-bottom: 10px;    /* レイアウト調整用 */
+    
+    position: relative;
+    
+    /* HPバーの中身（緑色の部分） */
+    .hp-bar {
+        width: 100%;         /* 初期状態は満タン */
+        height: 100%;        /* 親の高さに合わせる */
+        background-color: #00ff00; /* HPの色（緑） */
+
+        transition: width 0.5s ease-out; 
+    }
+}
+
+.hp-danger {
+    background-color: red;
+}
+
+#winscreen{
+    opacity: 0;
+    height: 420px;
+    width: 630px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    top: 0%;
+    left: 0%;
+    background-color: rgba(176, 175, 175,0.2);
+    pointer-events: none;
+}
+
+#deque{
+    cursor: pointer;
+    user-select: none;
+}
