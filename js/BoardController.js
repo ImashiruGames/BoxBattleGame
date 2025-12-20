@@ -74,6 +74,8 @@ for(let i=0;i<stageY;i++){
                             p2Remain.innerText = currentEnemyHP;
                             await sleep(5);
                         }
+                        currentEnemyHP -= damage%5;
+                        p2Remain.innerText = currentEnemyHP
 
                         if(currentEnemyHP <= 20){
                             setTimeout(()=>{
@@ -138,6 +140,9 @@ for(let i=0;i<stageY;i++){
                             p1Remain.innerText = currentPlayerHP;
                             await sleep(5);
                         }
+                        currentPlayerHP -= damage%5;
+                        p1Remain.innerText = currentPlayerHP;
+
                         if(currentPlayerHP <= 20){
                             setTimeout(()=>{
                                 p1Remain.style.color = "red";

@@ -2,8 +2,8 @@ const p1Select = document.getElementById("p1-select");
 const p2Select = document.getElementById("p2-select");
 
 //playerskill選択←あとで、プレイヤーに自由に選択できるようにさせる
-p1.skill = 1;
-p2.skill = 1;
+p1.skill = 3;
+p2.skill = 3;
 
 initSkillSelector();
 //下部にスキルの詳細をつける

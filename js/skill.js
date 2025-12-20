@@ -3,13 +3,18 @@ let skilllist = [
     ["恐怖の一撃","4つ以上そろえるまでダメージが出せない代わりに大ダメージ"],
     ["駆け出しの攻撃","3つ以上そろえるとダメージを与える（通常）"],
     ["俊敏なる攻撃","2つ揃いでもダメージを与えられる代わりにダメージは軽い"],
-    ["デバッグ攻撃","デバッグダメージ"]
+    ["デバッグ攻撃","デバッグダメージ"],
+    ["バックスラッシュ","右上から斜めにそろえた場合、ダメージが大きくなる(1.2倍)"],
+    ["不戦の毒","列に関係なく6ダメージを与える"]
 ]
 let SkillList = [
     fatalDamage,
     NormalAttack,
     MiniAttack,
-    debugattack];
+    debugattack,
+    Backslash,
+    Poisoning
+];
 
 // スキルは引数を、\/|-の順で入れる
 
@@ -70,6 +75,35 @@ function MiniAttack(a,b,c,d){
     }
 }
 
-function debugattack(count){
-    return 70;
+function debugattack(a,b,c,d){
+    return 44;
+}
+
+function Backslash(a,b,c,d){
+    count = Math.max(a,b,c,d);
+    bonus = 1;
+    // aが最も大きい場合、倍率を1.2にする。
+    if(a===count){
+        bonus = 1.2;
+    }
+
+    if(count >= 5){
+        // Debug.innerText += " 大攻撃！(80ダメージ)";
+        return 70*bonus; // 5個以上なら大ダメージ
+    }
+    else if(count === 4){
+        // Debug.innerText += " 中攻撃！(40ダメージ)";
+        return 35*bonus; // 4個なら中ダメージ
+    }
+    else if(count === 3){
+        // Debug.innerText += " 小攻撃！(10ダメージ)";
+        return 10*bonus; // 3個なら小ダメージ
+    }
+    else{
+        return 0; // それ以外（2個以下）はダメージなし
+    }
+}
+
+function Poisoning(a,b,c,d){
+    return 6;
 }
