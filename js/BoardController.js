@@ -1,70 +1,70 @@
-mainstage.style.width = `${boxsize*stageX}px`;
-mainstage.style.height = `${boxsize*stageY}px`;
+mainstage.style.width = `${BOXSIZE*STAGE_X}px`;
+mainstage.style.height = `${BOXSIZE*STAGE_Y}px`;
 
-for(let i=0;i<stageY;i++){
-    for(let j=0;j<stageX;j++){
+for(let i=0;i<STAGE_Y;i++){
+    for(let j=0;j<STAGE_X;j++){
         let box = document.createElement("div");
         // box.innerText = stageX*i+j; //←箱のインデックス番号がわかりやすいように
         box.x = j+1;
-        box.y = stageY-i;
-        box.whose = 0;
+        box.y = STAGE_Y-i;
+        box.state = 0;
         box.classList.add("box");
 
         box.addEventListener("click",async function(){
             // Debug.innerText = `座標は(${this.x},${this.y})`;
 
             let targetX = this.x;
-            boxes[checkIndex].classList.remove("bigger");
+            gridCells[checkIndex].classList.remove("bigger");
 
             // Debug.innerText = "";
-            for(let k=1;k<=stageY;k++){
-                let checkIndex = (stageY - k)*stageX + targetX - 1;
-                let targetBox = boxes[checkIndex];
+            for(let k=1;k<=STAGE_Y;k++){
+                let checkIndex = (STAGE_Y - k)*STAGE_X + targetX - 1;
+                let targetBox = gridCells[checkIndex];
 
 // p1攻撃処理
-                if(targetBox.whose === 0 && myturn){
-                    targetBox.whose = 1;
+                if(targetBox.state === 0 && isP1Turn){
+                    targetBox.state = 1;
                     targetBox.classList.add("p1color");
-                    turn.innerText = "2Pのターン"
+                    turnEl.innerText = "2Pのターン"
 
-                    a = checknaname1(checkIndex,targetBox.whose);
-                    b = checknaname2(checkIndex,targetBox.whose);
-                    c = checktate(checkIndex,targetBox.whose);
-                    d = checkyoko(checkIndex,targetBox.whose);
+                    diag1 = countNaname1(checkIndex,targetBox.state);
+                    diag2 = countNaname2(checkIndex,targetBox.state);
+                    tate = countVertical(checkIndex,targetBox.state);
+                    yoko = countHorizontal(checkIndex,targetBox.state);
 
     //ダメージ管理部分↓
                     let damage = 0;
-                    damage = SkillList[p1.skill](a,b,c,d);
+                    damage = skillFunctions[p1SkillNameEl.skill](diag1,diag2,tate,yoko);
                     ApplyDamageTo("2P",damage);
 
-                    turnindex.push(checkIndex);
-                    damagelist.push(damage);
+                    moveHistory.push(checkIndex);
+                    damageHistory.push(damage);
     //ダメージ管理部分↑
-                    myturn = false;
+                    isP1Turn = false;
                     break;
                 }
 
 // p2攻撃処理
-                else if(targetBox.whose === 0 && !myturn){
-                    targetBox.whose = 2;
+                else if(targetBox.state === 0 && !isP1Turn){
+                    targetBox.state = 2;
                     targetBox.classList.add("p2color");
-                    turn.innerText = "1Pのターン";
+                    turnEl.innerText = "1Pのターン";
 
-                    a = checknaname1(checkIndex,targetBox.whose);
-                    b = checknaname2(checkIndex,targetBox.whose);
-                    c = checktate(checkIndex,targetBox.whose);
-                    d = checkyoko(checkIndex,targetBox.whose);
+                    diag1 = countNaname1(checkIndex,targetBox.state);
+                    diag2 = countNaname2(checkIndex,targetBox.state);
+                    tate = countVertical(checkIndex,targetBox.state);
+                    yoko = countHorizontal(checkIndex,targetBox.state);
 
     //ダメージ管理部分↓
 
                     let damage = 0;
-                    damage = SkillList[p2.skill](a,b,c,d);
+                    damage = skillFunctions[p2SkillNameEl.skill](diag1,diag2,tate,yoko);
                     ApplyDamageTo("1P",damage);
 
-                    turnindex.push(checkIndex);
-                    damagelist.push(damage);
+                    moveHistory.push(checkIndex);
+                    damageHistory.push(damage);
     //ダメージ管理部分↑
-                    myturn = true;
+                    isP1Turn = true;
                     break;
                 }
             }  
@@ -79,15 +79,15 @@ for(let i=0;i<stageY;i++){
             //一番下を探す
             let targetX = this.x - 1;
 
-            // Debug.innerText+= `${boxes[targetX].whose}`;
+            // Debug.innerText+= `${boxes[targetX].state}`;
 
             // 一番上に埋まってたら、何もしない
-            if(boxes[targetX].whose != 0){
+            if(gridCells[targetX].state != 0){
                 return;}
             else{
-                checkIndex = stageX*(stageY-1) + targetX;
-                while(boxes[checkIndex].whose!=0 && checkIndex>0){
-                    checkIndex -= stageX;
+                checkIndex = STAGE_X*(STAGE_Y-1) + targetX;
+                while(gridCells[checkIndex].state!=0 && checkIndex>0){
+                    checkIndex -= STAGE_X;
                 }
 
                 hint(checkIndex);
@@ -102,15 +102,15 @@ for(let i=0;i<stageY;i++){
             //一番下を探す
             let targetX = this.x - 1;
 
-            // Debug.innerText+= `${boxes[targetX].whose}`;
+            // Debug.innerText+= `${boxes[targetX].state}`;
 
             // 一番上に埋まってたら、何もしない
-            if(boxes[targetX].whose != 0){
+            if(gridCells[targetX].state != 0){
                 return;}
             else{
-                checkIndex = stageX*(stageY-1) + targetX;
-                while(boxes[checkIndex].whose!=0 && checkIndex>0){
-                    checkIndex -= stageX;
+                checkIndex = STAGE_X*(STAGE_Y-1) + targetX;
+                while(gridCells[checkIndex].state!=0 && checkIndex>0){
+                    checkIndex -= STAGE_X;
                 }
 
                 removehint(checkIndex);
@@ -129,14 +129,14 @@ async function ApplyDamageTo(target,damage){
     let currentHP,remainElem,hpBar;
     // targetは"1P""2P"のどちらかを受け取る
     if(target==="1P"){
-        currentHP = currentPlayerHP;
-        remainElem = p1Remain;
-        hpBar = playerHP;
+        currentHP = p1Hp;
+        remainElem = p1HpTextEl;
+        hpBar = p1HpBarEl;
     }
     else{
-        currentHP = currentEnemyHP;
-        remainElem = p2Remain;
-        hpBar = enemyHP;
+        currentHP = p2Hp;
+        remainElem = p2HpTextEl;
+        hpBar = p2HpBarEl;
     }
 
     if(damage>0){
@@ -167,20 +167,20 @@ async function ApplyDamageTo(target,damage){
 // 勝利処理
         if(currentHP <= 0){
             currentHP = 0;
-            winMessage.innerText = `${target}の勝ち"`
+            winMessageEl.innerText = `${target}の勝ち"`
             winscreen.style.opacity = 1;
             winscreen.style.pointerEvents = "auto";
-            deque.style.pointerEvents = "none";
-            saveBtn.onclick = function() {
+            undoBtnEl.style.pointerEvents = "none";
+            saveBtnEl.onclick = function() {
             downloadBattleLog("1P","2P",target);
             };
         }
 
         if(target==="1P"){
-            currentPlayerHP = currentHP;
+            p1Hp = currentHP;
         }
         else{
-            currentEnemyHP = currentHP;
+            p2Hp = currentHP;
         }
 
         hpBar.style.width = `${currentHP}%`;

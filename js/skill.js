@@ -6,7 +6,7 @@ function bodyshake(){
     }, 500);
 }
 
-let skilllist = [
+let skillData = [
     ["恐怖の一撃","4つ以上そろえるまでダメージが出せない代わりに大ダメージ"],
     ["駆け出しの攻撃","3つ以上そろえるとダメージを与える（通常）"],
     ["俊敏なる攻撃","2つ揃いでもダメージを与えられる代わりにダメージは軽い"],
@@ -14,7 +14,7 @@ let skilllist = [
     ["バックスラッシュ","右上から斜めにそろえた場合、ダメージが大きくなる(1.2倍)"],
     ["不戦の毒","列に関係なく6ダメージを与える"]
 ]
-let SkillList = [
+let skillFunctions = [
     fatalDamage,
     NormalAttack,
     MiniAttack,
@@ -26,8 +26,8 @@ let SkillList = [
 // スキルは引数を、\/|-の順で入れる
 // 
 
-function fatalDamage(a,b,c,d){
-    let count = Math.max(a,b,c,d)
+function fatalDamage(diag1,diag2,tate,yoko){
+    let count = Math.max(diag1,diag2,tate,yoko)
     if(count >= 5){
         bodyshake();
         // Debug.innerText += "痛恨の一撃！！！！(100ダメージ)";
@@ -43,8 +43,8 @@ function fatalDamage(a,b,c,d){
     }
 }
 
-function NormalAttack(a,b,c,d){
-    let count = Math.max(a,b,c,d)
+function NormalAttack(diag1,diag2,tate,yoko){
+    let count = Math.max(diag1,diag2,tate,yoko)
     if(count >= 5){
         // Debug.innerText += " 大攻撃！(80ダメージ)";
         return 80; // 5個以上なら大ダメージ
@@ -62,8 +62,8 @@ function NormalAttack(a,b,c,d){
     }
 }
 
-function MiniAttack(a,b,c,d){
-    let count = Math.max(a,b,c,d)
+function MiniAttack(diag1,diag2,tate,yoko){
+    let count = Math.max(diag1,diag2,tate,yoko)
     if(count >= 5){
         // Debug.innerText += " ミニ大攻撃！(50ダメージ)";
         return 50; // 5個以上なら大ダメージ
@@ -85,15 +85,15 @@ function MiniAttack(a,b,c,d){
     }
 }
 
-function debugattack(a,b,c,d){
+function debugattack(diag1,diag2,tate,yoko){
     return 1;
 }
 
-function Backslash(a,b,c,d){
-    let count = Math.max(a,b,c,d);
+function Backslash(diag1,diag2,tate,yoko){
+    let count = Math.max(diag1,diag2,tate,yoko);
     let bonus = 1;
     // aが最も大きい場合、倍率を1.2にする。
-    if(a===count){
+    if(diag1===count){
         bonus = 1.2;
     }
 
@@ -114,6 +114,6 @@ function Backslash(a,b,c,d){
     }
 }
 
-function Poisoning(a,b,c,d){
+function Poisoning(diag1,diag2,tate,yoko){
     return 6;
 }

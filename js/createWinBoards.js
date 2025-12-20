@@ -1,7 +1,7 @@
 // 勝利画面の管理
 winscreen.style.opacity = 0;
-winscreen.style.width = `${boxsize*stageX}px`;
-winscreen.style.height = `${boxsize*stageY}px`;
+winscreen.style.width = `${BOXSIZE*STAGE_X}px`;
+winscreen.style.height = `${BOXSIZE*STAGE_Y}px`;
 
 // saveButton
-saveBtn.style.opacitiy = 1;
+saveBtnEl.style.opacitiy = 1;

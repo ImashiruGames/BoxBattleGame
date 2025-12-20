@@ -6,41 +6,41 @@ const sleep = (time) => new Promise((resolve) => setTimeout(resolve,time));
 //一段目に置いている自分のブロックの数、攻撃力が1あがる。
 //攻撃力nとは、1.n倍の威力で攻撃することにしたい
 
-deque.addEventListener("click",function(){
+undoBtnEl.addEventListener("click",function(){
 
-    if(turnindex.length === 0) return;
+    if(moveHistory.length === 0) return;
 
-    let beforeturnbox = boxes[turnindex.pop()];
-    let beforedamage = damagelist.pop();
+    let beforeturnbox = gridCells[moveHistory.pop()];
+    let beforedamage = damageHistory.pop();
 
-    if(myturn){
+    if(isP1Turn){
     // 前のターンのボックスを戻す
         beforeturnbox.classList.remove("p2color");
     // 前のターンのダメージを戻す
-        currentPlayerHP += beforedamage;
-        p1Remain.innerText = currentPlayerHP;
-        playerHP.style.width = `${currentPlayerHP}%`; 
+        p1Hp += beforedamage;
+        p1HpTextEl.innerText = p1Hp;
+        p1HpBarEl.style.width = `${p1Hp}%`; 
 
-        turn.innerText = "1Pのターン"
+        turnEl.innerText = "1Pのターン"
     }
     else{
         beforeturnbox.classList.remove("p1color");
 
-        currentEnemyHP += beforedamage;
-        p2Remain.innerText = currentEnemyHP;
-        enemyHP.style.width = `${currentEnemyHP}%`;
+        p2Hp += beforedamage;
+        p2HpTextEl.innerText = p2Hp;
+        p2HpBarEl.style.width = `${p2Hp}%`;
 
-        turn.innerText = "2Pのターン";
+        turnEl.innerText = "2Pのターン";
     }
-    beforeturnbox.whose = 0;
+    beforeturnbox.state = 0;
     
     // Debug.innerText = `${turnindex}　`;
     // Debug.innerText += `${damagelist}`;
     // プレイヤーターンを交代する
-    myturn = !myturn;
+    isP1Turn = !isP1Turn;
 })
 
-let boxes = document.querySelectorAll(".box");
+let gridCells = document.querySelectorAll(".box");
 
 // やりたいこと→Effectbuttonを作って、それを押すことでエフェクトが確認できる
 
@@ -49,13 +49,13 @@ let boxes = document.querySelectorAll(".box");
 // mainstage.appendChild(skillcard);
 
 function hint(checkIndex){
-    boxes[checkIndex].classList.add("bigger");
-    if(myturn){boxes[checkIndex].classList.add("p1color");}
-    else{boxes[checkIndex].classList.add("p2color")}
+    gridCells[checkIndex].classList.add("bigger");
+    if(isP1Turn){gridCells[checkIndex].classList.add("p1color");}
+    else{gridCells[checkIndex].classList.add("p2color")}
 }
 
 function removehint(checkIndex){
-    boxes[checkIndex].classList.remove("bigger");
-    if(myturn){boxes[checkIndex].classList.remove("p1color");}
-    else{boxes[checkIndex].classList.remove("p2color");}
+    gridCells[checkIndex].classList.remove("bigger");
+    if(isP1Turn){gridCells[checkIndex].classList.remove("p1color");}
+    else{gridCells[checkIndex].classList.remove("p2color");}
 }
