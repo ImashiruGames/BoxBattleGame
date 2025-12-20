@@ -89,9 +89,13 @@ for(let i=0;i<stageY;i++){
                         }
                         if(currentEnemyHP <= 0){
                             currentEnemyHP = 0;
-                            winscreen.innerText = "1Pの勝ち";
+                            winMessage.innerText = "1Pの勝ち";
                             winscreen.style.opacity = 1;
                             winscreen.style.pointerEvents = "auto";
+
+                            saveBtn.onclick = function() {
+                            downloadBattleLog("1P","2P","1P");
+                            };
                         }
 
                         enemyHP.style.width = `${currentEnemyHP}%`;
@@ -148,9 +152,13 @@ for(let i=0;i<stageY;i++){
                         }
                         if(currentPlayerHP <= 0){
                             currentPlayerHP = 0;
-                            winscreen.innerText = "2Pの勝ち";
+                            winMessage.innerText = "2Pの勝ち";
                             winscreen.style.opacity = 1;
                             winscreen.style.pointerEvents = "auto";
+
+                            saveBtn.onclick = function() {
+                            downloadBattleLog("1P","2P","1P");
+                            };
                         }
 
                         playerHP.style.width = `${currentPlayerHP}%`;

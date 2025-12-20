@@ -17,6 +17,27 @@ main{
     }
 }
 
+#winscreen{
+    // display: flex;
+    #winMessage{
+        padding: 3rem;
+        color: #3b38df;
+        background-color: #3867df24;
+        clip-path: polygon(100% 100%,10% 100%,0 90%,0 0,90% 0,100% 10%,100% 0);
+    }
+    #saveBtn{
+        height: 2rem;
+        width: 8rem;
+        font-size: 1rem;
+        text-align: center;
+        border: 2px solid black;
+        border-radius: 1rem;
+        background-color: #000;
+        color: white;
+        cursor: pointer;
+    }
+}
+
 .p1color{
     background-color: yellow;
 }

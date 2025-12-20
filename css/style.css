@@ -20,6 +20,24 @@ main .bigger {
   animation: big 0.5s infinite alternate;
 }
 
+#winscreen #winMessage {
+  padding: 3rem;
+  color: #3b38df;
+  background-color: rgba(56, 103, 223, 0.1411764706);
+  clip-path: polygon(100% 100%, 10% 100%, 0 90%, 0 0, 90% 0, 100% 10%, 100% 0);
+}
+#winscreen #saveBtn {
+  height: 2rem;
+  width: 8rem;
+  font-size: 1rem;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 1rem;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+}
+
 .p1color {
   background-color: yellow;
 }

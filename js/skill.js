@@ -8,7 +8,8 @@ let skilllist = [
 let SkillList = [
     fatalDamage,
     NormalAttack,
-    MiniAttack];
+    MiniAttack,
+    debugattack];
 
 // スキルは引数を、\/|-の順で入れる
 
