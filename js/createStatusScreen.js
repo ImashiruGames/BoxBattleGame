@@ -1,13 +1,12 @@
 //playerskill選択←あとで、プレイヤーに自由に選択できるようにさせる
-p1SkillNameEl.skill = 3;
-p2SkillNameEl.skill = 3;
+p1SkillNameEl.skill = 1;
+p2SkillNameEl.skill = 1;
 
 initSkillSelector();
 //下部にスキルの詳細をつける
 initDamageList();
 //
 SkillDetail();
-
 
 function initSkillSelector(){
 
@@ -44,33 +43,32 @@ function initDamageList(){
     let dl = document.getElementsByClassName("damagelist").item(0);
     dl.style.width = `${STAGE_X*70}px`;
 
-    for(let i=0;i<5;i++){
-        let listElement = document.createElement("p");
-        listElement.innerText = `${5-i}列：${skillFunctions[p1SkillNameEl.skill](5-i,5-i,5-i,5-i)}`;
-        listElement.classList.add("p1damagelist");
-        document.getElementById("p1attack").appendChild(listElement);
-    }
-
-    for(let j=0;j<5;j++){
-        let listElement = document.createElement("p");
-        listElement.innerText = `${5-j}列：${skillFunctions[p2SkillNameEl.skill](5-j,5-j,5-j,5-j)}`;
-        listElement.classList.add("p2damagelist");
-        document.getElementById("p2attack").appendChild(listElement);
-    }
+    // for(let i=0;i<5;i++){
+    //     let listElement = document.createElement("p");
+    //     listElement.innerText = `${5-i}列：${skillFunctions[p1SkillNameEl.skill](5-i,5-i,5-i,5-i)}`;
+    //     listElement.classList.add("p1damagelist");
+    //     document.getElementById("p1attack").appendChild(listElement);
+    // }
+    DamageList(1);
+    DamageList(2);
 }
 function DamageList(playernum){
+
+    let damageEl,skillInfo
     if(playernum===1){
-        for(let i=0;i<5;i++){
-            let listElement = document.getElementsByClassName(`p1damagelist`).item(i);
-            listElement.innerText = `${5-i}列：${skillFunctions[p1SkillNameEl.skill](5-i,5-i,5-i,5-i)}`
-        }
+        damageEl = document.getElementById("p1damagelist");
+        skillInfo = skillInfoGenerators[p1SkillNameEl.skill];
     }
-    if(playernum===2){
-        for(let i=0;i<5;i++){
-            let listElement = document.getElementsByClassName(`p2damagelist`).item(i);
-            listElement.innerText = `${5-i}列：${skillFunctions[p2SkillNameEl.skill](5-i,5-i,5-i,5-i)}`
-        }
+    else{
+        damageEl = document.getElementById("p2damagelist");
+        skillInfo = skillInfoGenerators[p2SkillNameEl.skill];
     }
+
+    let txt = "";
+    for(i=0;i<skillInfo(playernum).length;i++){
+        txt += skillInfo(playernum)[i]+"\n"
+    }
+    damageEl.innerText = txt.trim();
 }
 function SkillDetail(){
     let p1desc = document.getElementById("p1_description");

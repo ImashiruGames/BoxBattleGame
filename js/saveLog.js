@@ -6,11 +6,11 @@ function downloadBattleLog(p1Name,p2Name,winnerName) {
         winner: winnerName,                // 勝者
         p1Name: p1Name,
         p2Name: p2Name,
-        p1Skill: p1.skill,                 // 1Pのスキル
-        p2Skill: p2.skill,                 // 2Pのスキル
+        p1Skill: p1SkillNameEl.skill,                 // 1Pのスキル
+        p2Skill: p2SkillNameEl.skill,                 // 2Pのスキル
         history: {
-            moves: turnindex,              // どこに置いたか
-            damages: damagelist            // ダメージの履歴
+            moves: moveHistory,              // どこに置いたか
+            damages: damageHistory            // ダメージの履歴
         }
     };
 

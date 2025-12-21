@@ -34,7 +34,8 @@ for(let i=0;i<STAGE_Y;i++){
 
     //ダメージ管理部分↓
                     let damage = 0;
-                    damage = skillFunctions[p1SkillNameEl.skill](diag1,diag2,tate,yoko);
+                    damage = skillFunctions[p1SkillNameEl.skill](diag1,diag2,tate,yoko,1);
+                    DamageList(1);
                     ApplyDamageTo("2P",damage);
 
                     moveHistory.push(checkIndex);
@@ -59,7 +60,8 @@ for(let i=0;i<STAGE_Y;i++){
     //ダメージ管理部分↓
 
                     let damage = 0;
-                    damage = skillFunctions[p2SkillNameEl.skill](diag1,diag2,tate,yoko);
+                    damage = skillFunctions[p2SkillNameEl.skill](diag1,diag2,tate,yoko,2);
+                    DamageList(2);
                     ApplyDamageTo("1P",damage);
 
                     moveHistory.push(checkIndex);
@@ -173,21 +175,22 @@ async function ApplyDamageTo(target,damage){
         hpBar.style.width = `${currentHP}%`;
     }
 }
+
 function updateHint(x){
-            //一番下を探す
-            let targetX = x - 1;
+    //一番下を探す
+    let targetX = x - 1;
 
-            // 一番上に埋まってたら、何もしない
-            if(gridCells[targetX].state != BOX_STATE.EMPTY){
-                return;
-            }
-            let checkIndex = STAGE_X*(STAGE_Y-1) + targetX;
-                
-            while(gridCells[checkIndex].state!=BOX_STATE.EMPTY && checkIndex>=0){   
-                checkIndex -= STAGE_X;
-            }
+    // 一番上に埋まってたら、何もしない
+    if(gridCells[targetX].state != BOX_STATE.EMPTY){
+        return;
+    }
+    let checkIndex = STAGE_X*(STAGE_Y-1) + targetX;
+        
+    while(gridCells[checkIndex].state!=BOX_STATE.EMPTY && checkIndex>=0){   
+        checkIndex -= STAGE_X;
+    }
 
-            if(checkIndex >= 0){
-                hint(checkIndex);
-            }
+    if(checkIndex >= 0){
+        hint(checkIndex);
+    }
 }

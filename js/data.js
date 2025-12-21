@@ -17,6 +17,7 @@ const P2MAXHP = 100;
 
 // メインステージ
 const mainstage = document.getElementById("mainStage");                 // メインステージの大枠エレメント
+
 // ステージの広さ
 const STAGE_X = 10;                                                      //  └横幅に何ボックス作るか変数
 const STAGE_Y = 7;
@@ -40,6 +41,10 @@ const BOX_STATE = {                                                       //箱�
 
                      
 //   スキル発動に関しての配列
+let skillBonuses = {
+    1 : 0, //1Pのスキルボーナス
+    2 : 0 //2Pのスキルボーナス
+}
 
 const p1Select = document.getElementById("p1-select");                  // スキル選択プルダウンメニューエレメント
 const p2Select = document.getElementById("p2-select");

@@ -58,14 +58,17 @@ main{
     .status{
         display: grid;
         width: 50%;
-        grid-template-columns: 30% 1fr;
+        grid-template-columns: 40% 1fr;
         grid-template-rows: 2rem 1fr;
         grid-template-areas: 
         "attacklist skillname"
         "attacklist description";
         .attacklist{
+            display: flex;
+            justify-content: center;
+            align-items: center;
             grid-area: attacklist;
-            padding: 1rem;
+            padding: 0.5rem;
         }
         .skillname{
             display: flex;
