@@ -1,24 +1,98 @@
-body{   
-    user-select: none;
+@charset "utf-8";
+
+@use "_keyframe.scss";
+
+$box-size: 70px;
+
+$p1-color: yellow;
+$p2-color: orange;
+$font-color: rgb(59, 209, 35);
+$bg-color: rgba(0, 0, 0, 0.871);
+$border-color:rgb(107, 107, 65);
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@mixin absolute-full{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-main{
+body{
+    user-select: none;
+    margin: 0;
+    padding: 10px;
+    height: auto;
+}
+
+.cyber-grid {
+    user-select: none;
+    margin: 0;
+    padding: 10px;
+    height: auto;
+    // overflow: hidden; // スクロールバーを消す
+    
+    // 黒背景に、青緑色のグリッド線を引く
+    background-color: #050510; // ほぼ黒に近い紺色
+    background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: calc($box-size / 2) calc($box-size / 2); // グリッドのサイズ（マスの半分の大きさ等にすると綺麗）
+    color: $font-color;
+
+    // 画面の端を暗くして没入感を出す（ビネット効果）
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, transparent 40%, #000 100%);
+        pointer-events: none; // クリックを邪魔しない
+        z-index: -1; // 一番奥に配置
+    }
+
+    animation: deep-breath 75s linear infinite alternate;
+}
+
+
+*,*::before,*::after{
+    box-sizing: border-box;
+}
+
+// ==========================================
+//  ゲームボード（Main Stage）
+// ==========================================
+
+#mainStage{
     position: relative;
     display: flex;
     flex-wrap: wrap;
     .box{
-        width: 69.8px;
-        height: 70px;
+        height: $box-size;
+        width: $box-size;
         border-radius: 6px;
-        border: 1px solid black;
+        border: 1px solid $border-color;
+        cursor: grabbing;
     }
-    .bigger{
-        animation: big 0.5s infinite alternate;
+    .is-highlight{
+        animation: scale-pulse 0.5s infinite alternate;
     }
 }
 
+// ==========================================
+// オーバーレイ（Win Screen）
+// ==========================================
+
 #winscreen{
-    // display: flex;
+    @include absolute-full;
+    @include flex-center;
     #winMessage{
         padding: 3rem;
         color: #3b38df;
@@ -38,14 +112,14 @@ main{
     }
 }
 
-.p1color{
-    background-color: yellow;
+.is-p1{
+    background-color: $p1-color;
 }
-.p2color{
-    background-color: orange;
+.is-p2{
+    background-color: $p2-color;
 }
 
-.damagelist{
+.status-panel{
     height: 8rem;
     display: flex;
     border: 1px solid black;
@@ -61,42 +135,25 @@ main{
         grid-template-columns: 40% 1fr;
         grid-template-rows: 2rem 1fr;
         grid-template-areas: 
-        "attacklist skillname"
-        "attacklist description";
-        .attacklist{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            grid-area: attacklist;
+        "attack-list skill-name"
+        "attack-list description";
+        .attack-list{
+            @include flex-center;
+            grid-area: attack-list;
             padding: 0.5rem;
         }
-        .skillname{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            grid-area: skillname;
+        .skill-name{
+            @include flex-center;
+            grid-area: skill-name;
             font-weight: 700;
             text-align: center;
         }
-        .description{
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .skill-desc{
+            @include flex-center;
             border: 1px solid pink;
             grid-area: description;
         }
     }
-}
-
-@keyframes big{
-    0%{
-        transform: scale(1.0);
-        opacity: 0.5;
-    }   
-    25%,100%{
-        transform: scale(1.05);
-        opacity: 0.5;
-    } 
 }
 
 /* 切撃のエフェクト */
@@ -115,16 +172,7 @@ main{
     }
 }
 
-/* 画面を揺らすアニメーションの定義 */
-@keyframes shake {
-    0% { transform: translate(0, 0); }
-    10% { transform: translate(-5px, -5px); }
-    30% { transform: translate(5px, 5px); }
-    50% { transform: translate(-5px, 5px); }
-    70% { transform: translate(5px, -5px); }
-    90% { transform: translate(-5px, 0); }
-    100% { transform: translate(0, 0); }
-}
+
 
 /* このクラスがついた時に揺れる */
 .shake-effect {
@@ -199,11 +247,11 @@ main{
     margin-top: 10px;
     #p1-remain-counter{
         font-weight: bold;
-        color: black;
+        color: $font-color;
     }
     #p2-remain-counter{
         font-weight: bold;
-        color: black;
+        color: $font-color;
     }
 }
 /* HPバーの外枠（背景） */
@@ -246,7 +294,7 @@ main{
     pointer-events: none;
 }
 
-#deque{
+#undoBtn{
     cursor: pointer;
     user-select: none;
 }

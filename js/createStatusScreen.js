@@ -8,6 +8,7 @@ initDamageList();
 //
 SkillDetail();
 
+
 function initSkillSelector(){
 
     skillData.forEach(function(skill,index){
@@ -40,7 +41,7 @@ function initSkillSelector(){
 }
 
 function initDamageList(){
-    let dl = document.getElementsByClassName("damagelist").item(0);
+    let dl = document.getElementsByClassName("status-panel").item(0);
     dl.style.width = `${STAGE_X*70}px`;
 
     // for(let i=0;i<5;i++){
@@ -73,11 +74,11 @@ function DamageList(playernum){
 function SkillDetail(){
     let p1desc = document.getElementById("p1_description");
     p1SkillNameEl.innerText = skillData[p1SkillNameEl.skill][0];
-    p1SkillNameEl.classList.add("p1color");
+    p1SkillNameEl.classList.add("is-p1");
     p1desc.innerText = skillData[p1SkillNameEl.skill][1];
 
     let p2desc = document.getElementById("p2_description");
     p2SkillNameEl.innerText = skillData[p2SkillNameEl.skill][0];
-    p2SkillNameEl.classList.add("p2color");
+    p2SkillNameEl.classList.add("is-p2");
     p2desc.innerText = skillData[p2SkillNameEl.skill][1];
 }

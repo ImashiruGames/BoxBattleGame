@@ -15,7 +15,7 @@ undoBtnEl.addEventListener("click",function(){
 
     if(isP1Turn){
     // 前のターンのボックスを戻す
-        beforeturnbox.classList.remove("p2color");
+        beforeturnbox.classList.remove("is-p2");
     // 前のターンのダメージを戻す
         p1Hp += beforedamage;
         p1HpTextEl.innerText = p1Hp;
@@ -24,7 +24,7 @@ undoBtnEl.addEventListener("click",function(){
         turnEl.innerText = "1Pのターン"
     }
     else{
-        beforeturnbox.classList.remove("p1color");
+        beforeturnbox.classList.remove("is-p1");
 
         p2Hp += beforedamage;
         p2HpTextEl.innerText = p2Hp;
@@ -49,13 +49,13 @@ let gridCells = document.querySelectorAll(".box");
 // mainstage.appendChild(skillcard);
 
 function hint(checkIndex){
-    gridCells[checkIndex].classList.add("bigger");
-    if(isP1Turn){gridCells[checkIndex].classList.add("p1color");}
-    else{gridCells[checkIndex].classList.add("p2color")}
+    gridCells[checkIndex].classList.add("is-highlight");
+    if(isP1Turn){gridCells[checkIndex].classList.add("is-p1");}
+    else{gridCells[checkIndex].classList.add("is-p2")}
 }
 
 function removehint(checkIndex){
-    gridCells[checkIndex].classList.remove("bigger");
-    if(isP1Turn){gridCells[checkIndex].classList.remove("p1color");}
-    else{gridCells[checkIndex].classList.remove("p2color");}
+    gridCells[checkIndex].classList.remove("is-highlight");
+    if(isP1Turn){gridCells[checkIndex].classList.remove("is-p1");}
+    else{gridCells[checkIndex].classList.remove("is-p2");}
 }

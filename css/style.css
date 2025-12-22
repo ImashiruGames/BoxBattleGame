@@ -1,93 +1,5 @@
 @charset "UTF-8";
-body {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-}
-
-main {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-}
-main .box {
-  width: 69.8px;
-  height: 70px;
-  border-radius: 6px;
-  border: 1px solid black;
-}
-main .bigger {
-  animation: big 0.5s infinite alternate;
-}
-
-#winscreen #winMessage {
-  padding: 3rem;
-  color: #3b38df;
-  background-color: rgba(56, 103, 223, 0.1411764706);
-  clip-path: polygon(100% 100%, 10% 100%, 0 90%, 0 0, 90% 0, 100% 10%, 100% 0);
-}
-#winscreen #saveBtn {
-  height: 2rem;
-  width: 8rem;
-  font-size: 1rem;
-  text-align: center;
-  border: 2px solid black;
-  border-radius: 1rem;
-  background-color: #000;
-  color: white;
-  cursor: pointer;
-}
-
-.p1color {
-  background-color: yellow;
-}
-
-.p2color {
-  background-color: orange;
-}
-
-.damagelist {
-  height: 8rem;
-  display: flex;
-  border: 1px solid black;
-}
-.damagelist #p1statusbox {
-  border: 2px solid yellow;
-}
-.damagelist #p2statusbox {
-  border: 2px solid orange;
-}
-.damagelist .status {
-  display: grid;
-  width: 50%;
-  grid-template-columns: 40% 1fr;
-  grid-template-rows: 2rem 1fr;
-  grid-template-areas: "attacklist skillname" "attacklist description";
-}
-.damagelist .status .attacklist {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-area: attacklist;
-  padding: 0.5rem;
-}
-.damagelist .status .skillname {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-area: skillname;
-  font-weight: 700;
-  text-align: center;
-}
-.damagelist .status .description {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid pink;
-  grid-area: description;
-}
-
-@keyframes big {
+@keyframes scale-pulse {
   0% {
     transform: scale(1);
     opacity: 0.5;
@@ -97,19 +9,12 @@ main .bigger {
     opacity: 0.5;
   }
 }
-/* 切撃のエフェクト */
-@keyframes slash {
+@keyframes set-box {
   0% {
-    background-color: transparent;
-    transform: scale(1);
-  }
-  50% {
-    background-color: white; /* 一瞬光る */
-    transform: scale(1.2); /* ちょっと大きくなる */
+    transform: translateY(-10px);
   }
   100% {
-    background-color: transparent;
-    transform: scale(1);
+    transform: translateY(0px);
   }
 }
 /* 画面を揺らすアニメーションの定義 */
@@ -134,6 +39,174 @@ main .bigger {
   }
   100% {
     transform: translate(0, 0);
+  }
+}
+@keyframes deep-breath {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 45%;
+  }
+  100% {
+    background-position: 0% 30%;
+  }
+}
+@keyframes blinking {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+body {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  margin: 0;
+  padding: 10px;
+  height: auto;
+}
+
+.cyber-grid {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  margin: 0;
+  padding: 10px;
+  height: auto;
+  background-color: #050510;
+  background-image: linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 35px 35px;
+  color: rgb(59, 209, 35);
+  animation: deep-breath 75s linear infinite alternate;
+}
+.cyber-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 40%, #000 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+#mainStage {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+#mainStage .box {
+  height: 70px;
+  width: 70px;
+  border-radius: 6px;
+  border: 1px solid rgb(107, 107, 65);
+  cursor: grabbing;
+}
+#mainStage .is-highlight {
+  animation: scale-pulse 0.5s infinite alternate;
+}
+
+#winscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#winscreen #winMessage {
+  padding: 3rem;
+  color: #3b38df;
+  background-color: rgba(56, 103, 223, 0.1411764706);
+  clip-path: polygon(100% 100%, 10% 100%, 0 90%, 0 0, 90% 0, 100% 10%, 100% 0);
+}
+#winscreen #saveBtn {
+  height: 2rem;
+  width: 8rem;
+  font-size: 1rem;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 1rem;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+}
+
+.is-p1 {
+  background-color: yellow;
+}
+
+.is-p2 {
+  background-color: orange;
+}
+
+.status-panel {
+  height: 8rem;
+  display: flex;
+  border: 1px solid black;
+}
+.status-panel #p1statusbox {
+  border: 2px solid yellow;
+}
+.status-panel #p2statusbox {
+  border: 2px solid orange;
+}
+.status-panel .status {
+  display: grid;
+  width: 50%;
+  grid-template-columns: 40% 1fr;
+  grid-template-rows: 2rem 1fr;
+  grid-template-areas: "attack-list skill-name" "attack-list description";
+}
+.status-panel .status .attack-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: attack-list;
+  padding: 0.5rem;
+}
+.status-panel .status .skill-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: skill-name;
+  font-weight: 700;
+  text-align: center;
+}
+.status-panel .status .skill-desc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid pink;
+  grid-area: description;
+}
+
+/* 切撃のエフェクト */
+@keyframes slash {
+  0% {
+    background-color: transparent;
+    transform: scale(1);
+  }
+  50% {
+    background-color: white; /* 一瞬光る */
+    transform: scale(1.2); /* ちょっと大きくなる */
+  }
+  100% {
+    background-color: transparent;
+    transform: scale(1);
   }
 }
 /* このクラスがついた時に揺れる */
@@ -180,11 +253,11 @@ main .bigger {
 }
 .hp #p1-remain-counter {
   font-weight: bold;
-  color: black;
+  color: rgb(59, 209, 35);
 }
 .hp #p2-remain-counter {
   font-weight: bold;
-  color: black;
+  color: rgb(59, 209, 35);
 }
 
 /* HPバーの外枠（背景） */
@@ -224,7 +297,7 @@ main .bigger {
   pointer-events: none;
 }
 
-#deque {
+#undoBtn {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;

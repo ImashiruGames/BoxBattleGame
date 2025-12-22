@@ -26,7 +26,7 @@ const BOXSIZE = 70;                                                     //      
 const p1SkillNameEl = document.getElementById("p1_skillname");                     // statusのスキルネーム欄エレメント
 const p2SkillNameEl = document.getElementById("p2_skillname");                     
 
-const undoBtnEl = document.getElementById("deque");                         // 一手戻るボタンエレメント
+const undoBtnEl = document.getElementById("undoBtn");                         // 一手戻るボタンエレメント
 let moveHistory = [];                                                     //　└一手ごとにどこに置いたかの配列
 let damageHistory = [];                                                    //　 一手ごとにどれだけダメージ与えたかの配列
 let skillHistory = [];  

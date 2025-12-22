@@ -22,7 +22,7 @@ for(let i=0;i<STAGE_Y;i++){
 
 // p1攻撃処理
                 if(targetBox.state === BOX_STATE.EMPTY && isP1Turn){
-                    gridCells[checkIndex].classList.remove("bigger");
+                    gridCells[checkIndex].classList.remove("is-highlight");
                     targetBox.state = BOX_STATE.P1;
                     targetBox.classList.add("p1color");
                     turnEl.innerText = "2Pのターン"
@@ -47,7 +47,7 @@ for(let i=0;i<STAGE_Y;i++){
 
 // p2攻撃処理
                 else if(targetBox.state === BOX_STATE.EMPTY && !isP1Turn){
-                    gridCells[checkIndex].classList.remove("bigger");
+                    gridCells[checkIndex].classList.remove("is-highlight");
                     targetBox.state = BOX_STATE.P2;
                     targetBox.classList.add("p2color");
                     turnEl.innerText = "1Pのターン";
@@ -156,7 +156,7 @@ async function ApplyDamageTo(target,damage){
 // 勝利処理
         if(currentHP <= 0){
             currentHP = 0;
-            winMessageEl.innerText = `${target}の勝ち"`
+            winMessageEl.innerText = `${target}の勝ち`
             winscreen.style.opacity = 1;
             winscreen.style.pointerEvents = "auto";
             undoBtnEl.style.pointerEvents = "none";
