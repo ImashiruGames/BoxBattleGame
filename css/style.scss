@@ -29,6 +29,24 @@ body{
     padding: 10px;
     height: auto;
 }
+.my-turn{
+    cursor: grabbing;
+    .box{
+        cursor: grabbing !important;
+    }
+}
+.dropping{
+    cursor: grab;
+    .box{
+        cursor: grab !important;
+    }
+}
+.cpu-turn{
+    cursor: wait;
+    .box{
+        cursor: wait !important;
+    }
+}
 
 .cyber-grid {
     user-select: none;
@@ -61,7 +79,6 @@ body{
     animation: deep-breath 75s linear infinite alternate;
 }
 
-
 *,*::before,*::after{
     box-sizing: border-box;
 }
@@ -79,7 +96,6 @@ body{
         width: $box-size;
         border-radius: 6px;
         border: 1px solid $border-color;
-        cursor: grabbing;
     }
     .is-highlight{
         animation: scale-pulse 0.5s infinite alternate;

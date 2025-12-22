@@ -72,6 +72,27 @@ body {
   height: auto;
 }
 
+.my-turn {
+  cursor: grabbing;
+}
+.my-turn .box {
+  cursor: grabbing !important;
+}
+
+.dropping {
+  cursor: grab;
+}
+.dropping .box {
+  cursor: grab !important;
+}
+
+.cpu-turn {
+  cursor: wait;
+}
+.cpu-turn .box {
+  cursor: wait !important;
+}
+
 .cyber-grid {
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -111,7 +132,6 @@ body {
   width: 70px;
   border-radius: 6px;
   border: 1px solid rgb(107, 107, 65);
-  cursor: grabbing;
 }
 #mainStage .is-highlight {
   animation: scale-pulse 0.5s infinite alternate;

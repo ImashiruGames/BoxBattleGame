@@ -1,6 +1,3 @@
-const sleep = (time) => new Promise((resolve) => setTimeout(resolve,time));
-
-
 //作りたいスキルと、それに必要な技術や変数
 //同じ列に置き続けると攻撃力が１あがる
 //一段目に置いている自分のブロックの数、攻撃力が1あがる。
