@@ -63,15 +63,24 @@
     opacity: 0.9;
   }
 }
-body {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-  margin: 0;
-  padding: 10px;
-  height: auto;
+@keyframes computing-blink {
+  0% {
+    opacity: 0.4;
+    text-shadow: 0 0 2px #00ff00;
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+  }
 }
-
+@keyframes drop-motion {
+  0% {
+    transform: translateY(-10px);
+  }
+  50%, 100% {
+    transform: translateY(0);
+  }
+}
 .my-turn {
   cursor: grabbing;
 }
@@ -94,6 +103,8 @@ body {
 }
 
 .cyber-grid {
+  height: 100vh;
+  overflow-x: hidden;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
@@ -122,19 +133,152 @@ body {
   box-sizing: border-box;
 }
 
-#mainStage {
+.hud-header {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+  z-index: 10;
+}
+.hud-header .hp-container {
+  width: 400px;
+  height: 10px;
+  background: #333;
+  transform: skewX(-20deg); /* 斜めにする */
+  border: 2px solid #555;
+  overflow: hidden;
+  margin: 0 20px 0 20px;
+  margin-bottom: 10px; /* レイアウト調整用 */
+  position: relative;
+}
+.hud-header .hp-container .hp-bar {
+  height: 100%;
+  background: lime;
+  box-shadow: 0 0 10px lime;
+  transition: width 0.5s ease-out;
+}
+.hud-header .turn-indicator {
+  width: 20rem;
+  font-size: 1/5rem;
+  font-weight: bold;
+  color: cyan;
+  text-shadow: 0 0 10px cyan;
+}
+.hud-header .turn-indicator #turn {
+  text-align: center;
+}
+.hud-header .turn-indicator #turn.thinking-mode {
+  font-size: 1rem;
+  color: #00ff00;
+  font-family: monospace;
+  animation: computing-blink 0.2s infinite alternate;
+}
+.hud-header .turn-indicator #turn.thinking-mode::after {
+  content: " ■";
+}
+
+.battle-field {
+  flex: 1; /* 残りの高さを全部使う */
+  display: grid;
+  /* 左(1fr) 中(auto) 右(1fr) の比率 */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center; /* 垂直方向中央揃え */
+  padding: 20px;
+}
+.battle-field .side-panel {
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* 情報は下に寄せる */
+  padding: 20px;
+  border: white 1px solid;
+  /* キャラ立ち絵 */
+}
+.battle-field .side-panel.p1-side {
+  align-items: flex-start; /* 左寄せ */
+  text-align: left;
+}
+.battle-field .side-panel.p2-side {
+  align-items: flex-end; /* 右寄せ */
+  text-align: right;
+}
+.battle-field .side-panel .character-art {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 80%; /* 画面の8割くらいの大きさ */
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: -1; /* 文字の後ろへ */
+  opacity: 0.8;
+  border: 1px solid white;
+}
+.battle-field .side-panel .info-box {
+  background: rgba(0, 20, 40, 0.7); /* 半透明の紺色 */
+  padding: 15px;
+  border-radius: 4px;
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px); /* 背景をぼかす */
+  width: 100%;
+}
+.battle-field .side-panel .info-box .skill-name {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.battle-field .side-panel .info-box .stats-log {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #aaa;
+  line-height: 1.4;
+}
+.battle-field .board-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.battle-field .board-area #mainStage {
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.5);
 }
-#mainStage .box {
+.battle-field .board-area #mainStage .box {
   height: 70px;
   width: 70px;
   border-radius: 6px;
   border: 1px solid rgb(107, 107, 65);
 }
-#mainStage .is-highlight {
+.battle-field .board-area #mainStage .is-highlight {
   animation: scale-pulse 0.5s infinite alternate;
+}
+.battle-field .board-area #undoBtn {
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  margin-top: 20px;
+  /* ボタンのデザインもかっこよく */
+  background: transparent;
+  border: 1px solid cyan;
+  color: cyan;
+  padding: 10px 30px;
+}
+.battle-field .board-area #undoBtn:hover {
+  background: cyan;
+  color: black;
+}
+body.cpu-turn .battle-field .board-area #undoBtn {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 #winscreen {
@@ -146,6 +290,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
 }
 #winscreen #winMessage {
   padding: 3rem;
@@ -164,71 +311,28 @@ body {
   color: white;
   cursor: pointer;
 }
+#winscreen #nextStageBtn {
+  height: 2rem;
+  width: 8rem;
+  font-size: 1rem;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 1rem;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+}
 
 .is-p1 {
   background-color: yellow;
+  animation: drop-motion 1s ease-out;
 }
 
 .is-p2 {
   background-color: orange;
+  animation: drop-motion 1s ease-out;
 }
 
-.status-panel {
-  height: 8rem;
-  display: flex;
-  border: 1px solid black;
-}
-.status-panel #p1statusbox {
-  border: 2px solid yellow;
-}
-.status-panel #p2statusbox {
-  border: 2px solid orange;
-}
-.status-panel .status {
-  display: grid;
-  width: 50%;
-  grid-template-columns: 40% 1fr;
-  grid-template-rows: 2rem 1fr;
-  grid-template-areas: "attack-list skill-name" "attack-list description";
-}
-.status-panel .status .attack-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-area: attack-list;
-  padding: 0.5rem;
-}
-.status-panel .status .skill-name {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-area: skill-name;
-  font-weight: 700;
-  text-align: center;
-}
-.status-panel .status .skill-desc {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid pink;
-  grid-area: description;
-}
-
-/* 切撃のエフェクト */
-@keyframes slash {
-  0% {
-    background-color: transparent;
-    transform: scale(1);
-  }
-  50% {
-    background-color: white; /* 一瞬光る */
-    transform: scale(1.2); /* ちょっと大きくなる */
-  }
-  100% {
-    background-color: transparent;
-    transform: scale(1);
-  }
-}
 /* このクラスがついた時に揺れる */
 .shake-effect {
   animation: shake 0.5s ease-in-out; /* 0.5秒かけて揺れる */
@@ -237,10 +341,6 @@ body {
 /* このクラスがつくとアニメーションする */
 .slash-effect {
   animation: slash 0.3s ease-out infinite; /* 0.3秒で実行 */
-}
-
-#debugger {
-  margin-left: 10px;
 }
 
 #animationBox {
@@ -258,7 +358,7 @@ body {
 
 /* 追加のおすすめCSS */
 .skill-select {
-  width: 100%;
+  width: 40%;
   padding: 5px;
   margin-bottom: 5px;
   font-size: 1rem;
@@ -267,59 +367,6 @@ body {
   background-color: #fff;
 }
 
-.hp {
-  display: flex;
-  margin-top: 10px;
-}
-.hp #p1-remain-counter {
-  font-weight: bold;
-  color: rgb(59, 209, 35);
-}
-.hp #p2-remain-counter {
-  font-weight: bold;
-  color: rgb(59, 209, 35);
-}
-
-/* HPバーの外枠（背景） */
-.hp-container {
-  margin: 0 20px 0 20px;
-  width: 300px; /* バーの全体の長さ */
-  height: 20px; /* バーの太さ */
-  background-color: #333; /* 減った部分の色（背景色） */
-  border: 2px solid #000; /* 枠線 */
-  margin-bottom: 10px; /* レイアウト調整用 */
-  position: relative;
-  /* HPバーの中身（緑色の部分） */
-}
-.hp-container .hp-bar {
-  width: 100%; /* 初期状態は満タン */
-  height: 100%; /* 親の高さに合わせる */
-  background-color: #00ff00; /* HPの色（緑） */
-  transition: width 0.5s ease-out;
-}
-
 .hp-danger {
   background-color: red;
-}
-
-#winscreen {
-  opacity: 0;
-  height: 420px;
-  width: 630px;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 80px;
-  top: 0%;
-  left: 0%;
-  background-color: rgba(176, 175, 175, 0.2);
-  pointer-events: none;
-}
-
-#undoBtn {
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
 }/*# sourceMappingURL=style.css.map */

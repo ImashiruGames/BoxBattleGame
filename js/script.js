@@ -5,36 +5,11 @@
 
 undoBtnEl.addEventListener("click",function(){
 
-    if(moveHistory.length === 0) return;
-
-    let beforeturnbox = gridCells[moveHistory.pop()];
-    let beforedamage = damageHistory.pop();
-
-    if(isP1Turn){
-    // 前のターンのボックスを戻す
-        beforeturnbox.classList.remove("is-p2");
-    // 前のターンのダメージを戻す
-        p1Hp += beforedamage;
-        p1HpTextEl.innerText = p1Hp;
-        p1HpBarEl.style.width = `${p1Hp}%`; 
-
-        turnEl.innerText = "1Pのターン"
+    if(IS_CPU_MODE){
+        undo();
     }
-    else{
-        beforeturnbox.classList.remove("is-p1");
+    undo();
 
-        p2Hp += beforedamage;
-        p2HpTextEl.innerText = p2Hp;
-        p2HpBarEl.style.width = `${p2Hp}%`;
-
-        turnEl.innerText = "2Pのターン";
-    }
-    beforeturnbox.state = 0;
-    
-    // Debug.innerText = `${turnindex}　`;
-    // Debug.innerText += `${damagelist}`;
-    // プレイヤーターンを交代する
-    isP1Turn = !isP1Turn;
 })
 
 let gridCells = document.querySelectorAll(".box");
@@ -55,4 +30,42 @@ function removehint(checkIndex){
     gridCells[checkIndex].classList.remove("is-highlight");
     if(isP1Turn){gridCells[checkIndex].classList.remove("is-p1");}
     else{gridCells[checkIndex].classList.remove("is-p2");}
+}
+
+function undo(){
+
+    if(moveHistory.length === 0) return;
+
+    let beforeturnbox = gridCells[moveHistory.pop()];
+    let beforedamage = damageHistory.pop();
+
+    if(isP1Turn){
+    // 前のターンのボックスを戻す
+        beforeturnbox.classList.remove("is-p2");
+    // 前のターンのダメージを戻す
+        p1Hp += beforedamage;
+        p1HpTextEl.innerText = p1Hp;
+        p1HpBarEl.style.width = `${p1Hp}%`; 
+
+    }
+    else{
+        beforeturnbox.classList.remove("is-p1");
+
+        p2Hp += beforedamage;
+        p2HpTextEl.innerText = p2Hp;
+        p2HpBarEl.style.width = `${p2Hp}%`;
+    }
+    beforeturnbox.state = 0;
+    
+    // Debug.innerText = `${turnindex}　`;
+    // Debug.innerText += `${damagelist}`;
+    // プレイヤーターンを交代する
+    isP1Turn = !isP1Turn;
+
+    if(isP1Turn){
+        turnEl.innerText = "1Pのターン";
+    }
+    else{
+        turnEl.innerText = "2Pのターン";
+    }
 }

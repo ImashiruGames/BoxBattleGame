@@ -23,12 +23,6 @@ $border-color:rgb(107, 107, 65);
     height: 100%;
 }
 
-body{
-    user-select: none;
-    margin: 0;
-    padding: 10px;
-    height: auto;
-}
 .my-turn{
     cursor: grabbing;
     .box{
@@ -47,16 +41,19 @@ body{
         cursor: wait !important;
     }
 }
-
+// ==========================================
+//  bodyの見た目(ゲーム画面)
+// ==========================================
 .cyber-grid {
+    height: 100vh;
+    overflow-x: hidden;
     user-select: none;
     margin: 0;
     padding: 10px;
     height: auto;
     // overflow: hidden; // スクロールバーを消す
     
-    // 黒背景に、青緑色のグリッド線を引く
-    background-color: #050510; // ほぼ黒に近い紺色
+    background-color: #050510;
     background-image: 
         linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
@@ -83,22 +80,191 @@ body{
     box-sizing: border-box;
 }
 
+
 // ==========================================
-//  ゲームボード（Main Stage）
+//  hud-header (左右に.hp-container 中央にturn-indicator)
+// ==========================================
+.hud-header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    z-index: 10;
+
+    .hp-container {
+        width: 400px;
+        height: 10px;
+        background: #333;
+        transform: skewX(-20deg); /* 斜めにする */
+        border: 2px solid #555;
+        overflow: hidden;
+
+        margin: 0 20px 0 20px;
+        margin-bottom: 10px;    /* レイアウト調整用 */
+        
+        position: relative;
+        
+        .hp-bar {
+            height: 100%;
+            background: lime;
+            box-shadow: 0 0 10px lime;
+            transition: width 0.5s ease-out; 
+        }
+    }
+
+    // ==========================================
+    //  turn-indicator (文字は#turn)
+    // ==========================================
+    .turn-indicator{
+        // border: 1px solid white;
+        width: 20rem;
+        font-size: 1/5rem;
+        font-weight: bold;
+        color: cyan;
+        text-shadow: 0 0 10px cyan;
+
+        #turn{
+            text-align: center;
+            &.thinking-mode{
+            font-size: 1rem;
+            color: #00ff00; // マトリックスっぽい緑とか
+            font-family: monospace; // プログラミングフォントっぽく
+            animation: computing-blink 0.2s infinite alternate; // 高速点滅
+                
+                &::after {
+                    content: " ■"; // 文字の後ろにカーソルをつける演出
+                }       
+            }
+        }
+    }
+}
+// ==========================================
+//  バトルフィールド（左右に.side-panel 中央に#mainStage）
 // ==========================================
 
-#mainStage{
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    .box{
-        height: $box-size;
-        width: $box-size;
-        border-radius: 6px;
-        border: 1px solid $border-color;
+.battle-field {
+    flex: 1; /* 残りの高さを全部使う */
+    display: grid;
+    /* 左(1fr) 中(auto) 右(1fr) の比率 */
+    grid-template-columns: 1fr auto 1fr; 
+    align-items: center; /* 垂直方向中央揃え */
+    padding: 20px;
+
+    // ==========================================
+    //  サイドパネル(上部.character-art 下部に.info-box)
+    // ==========================================
+    .side-panel {
+        height: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end; /* 情報は下に寄せる */
+        padding: 20px;
+        border: white 1px solid;
+
+        &.p1-side { 
+            align-items: flex-start; /* 左寄せ */
+            text-align: left;
+            // .character-art { left: -50px; background-image: url('p1.png'); } 
+        }
+        &.p2-side { 
+            align-items: flex-end; /* 右寄せ */
+            text-align: right;
+            // .character-art { right: -50px; transform: scaleX(-1); background-image: url('p2.png'); } 
+        }
+
+        /* キャラ立ち絵 */
+        .character-art {
+            position: absolute;
+            top: 0;
+            left: 0;
+            // right: -10px;
+            height: 80%; /* 画面の8割くらいの大きさ */
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            z-index: -1; /* 文字の後ろへ */
+            opacity: 0.8;
+            border: 1px solid white;
+        }
+
+        // ==========================================
+        //  能力表示ボード（上から順に、.skill-name(#p1_skillname）,.skill-desc(#p1-description),.status-log(#p1attack)
+        // ==========================================
+        .info-box {
+            background: rgba(0, 20, 40, 0.7); /* 半透明の紺色 */
+            // border-left: 4px solid cyan; /* 左にアクセントライン */
+            padding: 15px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px); /* 背景をぼかす */
+            width: 100%;
+            // border: 1px solid white;
+            
+            .skill-name {
+                font-size: 1.2rem;
+                color: #fff;
+                margin-bottom: 10px;
+                border-bottom: 1px solid rgba(255,255,255,0.3);
+            }
+            
+            .stats-log {
+                font-family: monospace;
+                font-size: 0.8rem;
+                color: #aaa;
+                line-height: 1.4;
+            }
+        }
+
     }
-    .is-highlight{
-        animation: scale-pulse 0.5s infinite alternate;
+    // ====================================================================================
+    // ====================================================================================
+    //  ゲームボード（画面中央ドデカ#mainStageと、行って戻るボタン(#undoBtn)
+    // ====================================================================================
+    // ====================================================================================
+
+    .board-area{
+        @include flex-center;
+        flex-direction: column;
+
+        #mainStage{
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+            background: rgba(0,0,0,0.5);
+            .box{
+                height: $box-size;
+                width: $box-size;
+                border-radius: 6px;
+                border: 1px solid $border-color;
+            }
+            .is-highlight{
+                animation: scale-pulse 0.5s infinite alternate;
+            }
+
+            // }
+        }
+        #undoBtn{
+            cursor: pointer;
+            user-select: none;
+
+            margin-top: 20px;
+            /* ボタンのデザインもかっこよく */
+            background: transparent;
+            border: 1px solid cyan;
+            color: cyan;
+            padding: 10px 30px;
+            &:hover { background: cyan; color: black; }
+
+            body.cpu-turn &{
+                opacity: 0.5;
+                pointer-events: none;
+                cursor: not-allowed;
+            }
+        }
     }
 }
 
@@ -109,6 +275,9 @@ body{
 #winscreen{
     @include absolute-full;
     @include flex-center;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
     #winMessage{
         padding: 3rem;
         color: #3b38df;
@@ -126,69 +295,58 @@ body{
         color: white;
         cursor: pointer;
     }
+    #nextStageBtn{
+        height: 2rem;
+        width: 8rem;
+        font-size: 1rem;
+        text-align: center;
+        border: 2px solid black;
+        border-radius: 1rem;
+        background-color: #000;
+        color: white;
+        cursor: pointer;
+    }
 }
-
 .is-p1{
     background-color: $p1-color;
+    animation: drop-motion 1s ease-out;
 }
 .is-p2{
     background-color: $p2-color;
+    animation: drop-motion 1s ease-out;
 }
 
-.status-panel{
-    height: 8rem;
-    display: flex;
-    border: 1px solid black;
-    #p1statusbox{
-        border: 2px solid yellow;
-    }
-    #p2statusbox{
-        border: 2px solid orange;
-    }
-    .status{
-        display: grid;
-        width: 50%;
-        grid-template-columns: 40% 1fr;
-        grid-template-rows: 2rem 1fr;
-        grid-template-areas: 
-        "attack-list skill-name"
-        "attack-list description";
-        .attack-list{
-            @include flex-center;
-            grid-area: attack-list;
-            padding: 0.5rem;
-        }
-        .skill-name{
-            @include flex-center;
-            grid-area: skill-name;
-            font-weight: 700;
-            text-align: center;
-        }
-        .skill-desc{
-            @include flex-center;
-            border: 1px solid pink;
-            grid-area: description;
-        }
-    }
-}
-
-/* 切撃のエフェクト */
-@keyframes slash {
-    0% {
-        background-color: transparent;
-        transform: scale(1);
-    }
-    50% {
-        background-color: white; /* 一瞬光る */
-        transform: scale(1.2);   /* ちょっと大きくなる */
-    }
-    100% {
-        background-color: transparent;
-        transform: scale(1);
-    }
-}
-
-
+//旧info-boxレイアウト（レガシー）
+//  .status-panel{
+//     height: 8rem;
+//     display: flex;
+//     border: 1px solid black;
+//     .status{
+//         display: grid;
+//         width: 50%;
+//         grid-template-columns: 40% 1fr;
+//         grid-template-rows: 2rem 1fr;
+//         grid-template-areas: 
+//         "attack-list skill-name"
+//         "attack-list description";
+//         .attack-list{
+//             @include flex-center;
+//             grid-area: attack-list;
+//             padding: 0.5rem;
+//         }
+//         .skill-name{
+//             @include flex-center;
+//             grid-area: skill-name;
+//             font-weight: 700;
+//             text-align: center;
+//         }
+//         .skill-desc{
+//             @include flex-center;
+//             border: 1px solid pink;
+//             grid-area: description;
+//         }
+//     }
+// }
 
 /* このクラスがついた時に揺れる */
 .shake-effect {
@@ -198,40 +356,6 @@ body{
 /* このクラスがつくとアニメーションする */
 .slash-effect {
     animation: slash 0.3s ease-out infinite; /* 0.3秒で実行 */
-}
-
-// .skillcard{
-// border: 1px solid black;
-// border-radius: 0.2rem;
-// position: absolute;
-// height: 300px;
-// width: 200px;
-// background-color: rgb(229, 209, 56);
-
-// display: flex;
-// flex-direction: column;
-// .skillname{
-//     width: 100%;
-//     padding: 0.4rem 0 0.4rem;
-//     text-align: center;
-//     font-weight: bolder;
-// }
-// .skilldetail{
-//     width: 100%;
-//     padding: 0.5rem 0 0.5rem;
-// }
-// table{
-//     width: 70%;
-    
-//     td{
-//         text-align: left;
-
-//     }
-// }
-// }
-
-#debugger{
-    margin-left: 10px;
 }
 
 #animationBox{
@@ -249,7 +373,7 @@ body{
 
 /* 追加のおすすめCSS */
 .skill-select {
-    width: 100%;
+    width: 40%;
     padding: 5px;
     margin-bottom: 5px;
     font-size: 1rem;
@@ -258,59 +382,20 @@ body{
     background-color: #fff;
 }
 
-.hp{
-    display: flex;
-    margin-top: 10px;
-    #p1-remain-counter{
-        font-weight: bold;
-        color: $font-color;
-    }
-    #p2-remain-counter{
-        font-weight: bold;
-        color: $font-color;
-    }
-}
-/* HPバーの外枠（背景） */
-.hp-container {
-    margin: 0 20px 0 20px;
-    width: 300px;        /* バーの全体の長さ */
-    height: 20px;        /* バーの太さ */
-    background-color: #333; /* 減った部分の色（背景色） */
-    border: 2px solid #000; /* 枠線 */
-    margin-bottom: 10px;    /* レイアウト調整用 */
-    
-    position: relative;
-    
-    /* HPバーの中身（緑色の部分） */
-    .hp-bar {
-        width: 100%;         /* 初期状態は満タン */
-        height: 100%;        /* 親の高さに合わせる */
-        background-color: #00ff00; /* HPの色（緑） */
-
-        transition: width 0.5s ease-out; 
-    }
-}
-
 .hp-danger {
     background-color: red;
 }
 
-#winscreen{
-    opacity: 0;
-    height: 420px;
-    width: 630px;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 80px;
-    top: 0%;
-    left: 0%;
-    background-color: rgba(176, 175, 175,0.2);
-    pointer-events: none;
-}
-
-#undoBtn{
-    cursor: pointer;
-    user-select: none;
-}
+// #winscreen{
+//     opacity: 0;
+//     height: 420px;
+//     width: 630px;
+//     position: absolute;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     font-size: 80px;
+//     top: 0%;
+//     left: 0%;
+//     background-color: rgba(176, 175, 175,0.2);
+//     pointer-events: none;

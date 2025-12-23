@@ -7,72 +7,70 @@
     <link rel="stylesheet" href="css/destyle.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="cyber-grid">
+
+<!-- <div id="debug-layer" style="position: absolute; top: 0; left: 0; z-index: 9999; opacity: 0.5;"> -->
     <select id="p1-select" class="skill-select"></select>
     <select id="p2-select" class="skill-select"></select>
-    <div id="animationBox">
-        <button id="effectBtn">エフェクト確認</button>
-    </div>  
+    <!-- <button id="effectBtn">エフェクト確認</button>
     <p id="debugger"></p>
-    <div id="turn">1Pのターン</div>
-<div class="hp">
-    <div id="p1-hp">
-        <div id="p1-remain"><span id="p1-remain-counter">100</span>/100</div>
-        <div class="hp-container">
-            <div class="hp-bar" id="player-hp"></div>
-        </div>
-    </div>
-    <div id="p2-hp">
-        <div id="p2remain"><span id="p2-remain-counter">100</span>/100</div>
-        <div class="hp-container">
-            <div class="hp-bar" id="enemy-hp"></div>
-        </div>
-    </div>
-</div>
-    <div id="undoBtn">一手戻る</div>
+    <div id="animationBox"></div>   -->
+<!-- </div> -->
 
-    <main id="mainStage">
-    <!-- <div class="skillcard">
-        <p class="skillname">恐怖の一撃</p>
-        <hr>
-        <p class="skilldetail">4つ以上そろえるまでダメージが出せない代わりに、大ダメージ</p>
-        <table>
-            <tr>
-                <td>5ライン：</td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>4ライン：</td>
-                <td>50</td>
-            </tr>
-            <tr>
-                <td>3ライン：</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>2ライン：</td>
-                <td>0</td>
-            </tr>
-        </table>
-    </div> -->
-    <div id="winscreen">
-        <p id="winMessage">P1の勝利</p>
-        <button id="saveBtn">対戦履歴を保存</button>
-    </div>
+
+<div class="game-container">
+    <header class="hud-header">
+        <div id="p1-hp" class="p1">
+            <div class="hp-text-wrapper">
+                <span class="label"></span>
+                <div id="p1-remain"><span id="p1-remain-counter">100</span>/100</div>
+            </div>
+            <div class="hp-container">
+                <div class="hp-bar" id="player-hp"></div>
+            </div>
+        </div>
+
+        <div class="turn-indicator">   
+            <div id="turn">1Pのターン</div>
+        </div>
+
+        <div id="p2-hp" class="p2">
+            <div id="p2remain"><span id="p2-remain-counter">100</span>/100</div>
+            <div class="hp-container">
+            <div class="hp-bar" id="enemy-hp"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="battle-field">
+        <aside class="side-panel p1-side">
+            <div class="character-art p1-img"></div>
+            <div id="p1statusbox" class="info-box">
+                <div id="p1_skillname" class="skill-name">恐怖の一撃</div>
+                <div id="p1_description"class="skill-desc">4つ以上そろえるまでダメージが出せない代わりに、大ダメージ</div>
+                <div class="status-log" id="p1attack"><p id="p1damagelist"></p></div>
+            </div>
+        </aside>
+        <section class="board-area">
+            <div id="mainStage">
+                <div id="winscreen">
+                    <p id="winMessage">P1の勝利</p>
+                    <button id="saveBtn">対戦履歴を保存</button>
+                </div>
+            </div>
+            <div id="undoBtn">一手戻る</div>
+        </section>
+        <aside class="side-panel p2-side">
+            <div class="character-art p2-img"></div>
+            <div id="p2statusbox" class="info-box">
+                <div id="p2_skillname" class="skill-name">駆け出しの攻撃</div>
+                <div id="p2_description" class="skill-desc">3つ以上そろえるとダメージを与える、ノーマルの攻撃</div>
+                <div class="status-log" id="p2attack"><p id="p2damagelist"></p></div>
+            </div>
+        </aside>
     </main>
-    
-    <div class="status-panel">
-        <div id="p1statusbox" class="status">
-            <div class="attack-list" id="p1attack"><p id="p1damagelist"></p></div>
-            <div id="p1_skillname" class="skill-name">恐怖の一撃</div>
-            <div id="p1_description"class="skill-desc">4つ以上そろえるまでダメージが出せない代わりに、大ダメージ</div>
-        </div>
-        <div id="p2statusbox" class="status">
-            <div class="attack-list" id="p2attack"><p id="p2damagelist"></p></div>
-            <div id="p2_skillname" class="skill-name">駆け出しの攻撃</div>
-            <div id="p2_description" class="skill-desc">3つ以上そろえるとダメージを与える、ノーマルの攻撃</div>
-        </div>
-    </div>
+</div>
 
 <script src="js/data.js"></script>
 <script src="js/skill.js"></script>

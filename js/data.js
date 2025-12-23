@@ -55,7 +55,8 @@ const saveBtnEl = document.getElementById("saveBtn");
 
 // ターン経過のおさらいを見る用の保存リスト
 
-let isP1Turn = true;                                                      // どっちターンなのかの確認変数
+let isP1Turn = true;      
+let isGameset = false;                                                // どっちターンなのかの確認変数
 
 //CPU対戦モードかどうか
-const IS_CPU_MODE = false;
+const IS_CPU_MODE = true;

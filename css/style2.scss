@@ -1,0 +1,12 @@
+/* 画面全体を埋める */
+// body {
+//     height: 100vh;
+//     overflow-x: hidden;
+//     display: flex;
+//     flex-direction: column;
+//     background-color: #050510;
+// }
+
+*,*::before,*::after{
+    box-sizing: border-box;
+}

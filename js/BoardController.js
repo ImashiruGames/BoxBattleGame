@@ -111,7 +111,13 @@ async function ApplyDamageTo(target,damage){
 // 勝利処理
         if(currentHP <= 0){
             currentHP = 0;
+
+            //ゲームセット判定関数
+            isGameset = true;
+            
             winMessageEl.innerText = `${winner}の勝ち`
+
+            turnEl.innerText = "勝負あり！";
             winscreen.style.opacity = 1;
             winscreen.style.pointerEvents = "auto";
             undoBtnEl.style.pointerEvents = "none";
@@ -204,6 +210,7 @@ async function playmove(x) {
             updateCursor();
 
             if (IS_CPU_MODE && isP1Turn) {
+
                 // 裏技：現在マウスが乗っている(.box:hover状態の)箱を直接探す
                 let hoveringBox = document.querySelector(".box:hover");
                 
@@ -213,8 +220,15 @@ async function playmove(x) {
                 }
             }
 
-            if(IS_CPU_MODE && !isP1Turn){
+            if(IS_CPU_MODE && !isP1Turn && !isGameset){
+
+                turnEl.innerText = "CPU Computing...";
+                turnEl.classList.add("thinking-mode");
+
                 cpuTurn();
+            }
+            else{
+                turnEl.classList.remove("thinking-mode");
             }
 
             break;

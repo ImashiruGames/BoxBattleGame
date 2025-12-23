@@ -162,7 +162,7 @@ function debugattack(diag1,diag2,tate,yoko,playernum){
     }
     damage += skillBonuses[playernum]*2;
 
-    return damage;
+    return damage*damage;
 }
 
 function Backslash(diag1,diag2,tate,yoko){

@@ -3,8 +3,11 @@ p1SkillNameEl.skill = 1;
 p2SkillNameEl.skill = 1;
 
 initSkillSelector();
+
 //下部にスキルの詳細をつける
-initDamageList();
+// initDamageList();
+DamageList(1);
+DamageList(2);
 //
 SkillDetail();
 
@@ -74,11 +77,11 @@ function DamageList(playernum){
 function SkillDetail(){
     let p1desc = document.getElementById("p1_description");
     p1SkillNameEl.innerText = skillData[p1SkillNameEl.skill][0];
-    p1SkillNameEl.classList.add("is-p1");
+    // p1SkillNameEl.classList.add("is-p1"); ダサいかも
     p1desc.innerText = skillData[p1SkillNameEl.skill][1];
 
     let p2desc = document.getElementById("p2_description");
     p2SkillNameEl.innerText = skillData[p2SkillNameEl.skill][0];
-    p2SkillNameEl.classList.add("is-p2");
+    // p2SkillNameEl.classList.add("is-p2");　ダサいかも
     p2desc.innerText = skillData[p2SkillNameEl.skill][1];
 }
