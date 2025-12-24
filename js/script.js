@@ -67,13 +67,13 @@ function undo(){
 
     // remainElem.style.color = rgb(59, 209, 35);
     // hpBar.style.backgroundColor = rgb(59, 209, 35);
-    if(ratio > 50){
+    if(ratio > HP_alerttiming_yellow){
         setTimeout(()=>{
             remainElem.style.color = "rgb(59, 209, 35)";
             hpBar.style.backgroundColor = "rgb(59, 209, 35)";
         },500)
     }
-    else if(ratio > 25){
+    else if(ratio > HP_alerttiming_red){
         setTimeout(()=>{
             remainElem.style.color = "orange";
             hpBar.style.backgroundColor = "yellow";

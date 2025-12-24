@@ -15,6 +15,10 @@ const p2maxHPTextEl = document.getElementById("p2-maxHP");
 const P1MAXHP = 150;
 const P2MAXHP = 40;
 
+const HP_alerttiming_red = 20;
+const HP_alerttiming_yellow = 50;
+
+
 let p1Hp = P1MAXHP;                                              // HP変数(こちらではいじらない)
 let p2Hp = P2MAXHP;
 
