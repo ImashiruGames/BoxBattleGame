@@ -27,7 +27,7 @@ let p2Hp = P2MAXHP;
 const mainstage = document.getElementById("mainStage");                 // メインステージの大枠エレメント
 
 // ステージの広さ
-const STAGE_X = 10;                                                      //  └横幅に何ボックス作るか変数
+const STAGE_X = 6;                                                      //  └横幅に何ボックス作るか変数
 const STAGE_Y = 7;
 const BOXSIZE = 70;                                                     //      └box一つあたりの一辺のpxサイズ変数
 

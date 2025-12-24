@@ -135,6 +135,7 @@
 
 .hud-header {
   height: 80px;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -142,8 +143,10 @@
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
   z-index: 10;
 }
-.hud-header .hp-container {
-  width: 400px;
+.hud-header .container-parent {
+  width: 40%;
+}
+.hud-header .container-parent .hp-container {
   height: 10px;
   background: #333;
   transform: skewX(-20deg); /* 斜めにする */
@@ -153,7 +156,7 @@
   margin-bottom: 10px; /* レイアウト調整用 */
   position: relative;
 }
-.hud-header .hp-container .hp-bar {
+.hud-header .container-parent .hp-container .hp-bar {
   height: 100%;
   width: 100%;
   background: lime;
@@ -161,7 +164,7 @@
   transition: width 0.5s ease-out;
 }
 .hud-header .turn-indicator {
-  width: 20rem;
+  width: 20%;
   font-size: 1/5rem;
   font-weight: bold;
   color: cyan;
