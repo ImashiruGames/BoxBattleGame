@@ -103,20 +103,22 @@ async function ApplyDamageTo(target,damage){
         remainElem.innerText = currentHP;
         // HPを減らし終わった
 
-        if(currentHP <= 20){
+        let ratio = 100*currentHP/maxHP;
+
+        if(ratio <= 20){
             setTimeout(()=>{
                 remainElem.style.color = "red";
                 hpBar.style.backgroundColor = "red";
             },500)
         }
-        else if(currentHP <= 50){
+        else if(ratio <= 50){
             setTimeout(()=>{
                 remainElem.style.color = "orange";
                 hpBar.style.backgroundColor = "yellow";
             },500)
         }
 // 勝利処理
-        if(currentHP <= 0){
+        if(ratio <= 0){
             currentHP = 0;
 
             //ゲームセット判定関数
@@ -140,7 +142,7 @@ async function ApplyDamageTo(target,damage){
             p2Hp = currentHP;
         }
 
-        hpBar.style.width = `${100*currentHP/maxHP}%`;
+        hpBar.style.width = `${ratio}%`;
     }
 }
 

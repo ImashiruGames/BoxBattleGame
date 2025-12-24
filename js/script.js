@@ -36,6 +36,16 @@ function undo(){
 
     if(moveHistory.length === 0) return;
 
+    let remainElem,hpBar
+    if(isP1Turn){
+        remainElem = p1HpTextEl;
+        hpBar = p1HpBarEl;
+    }
+    else{
+        remainElem = p2HpTextEl;
+        hpBar = p2HpBarEl;
+    }
+
     let beforeturnbox = gridCells[moveHistory.pop()];
     let beforedamage = damageHistory.pop();
 
@@ -57,8 +67,9 @@ function undo(){
     }
     beforeturnbox.state = 0;
     
-    // Debug.innerText = `${turnindex}　`;
-    // Debug.innerText += `${damagelist}`;
+    
+
+
     // プレイヤーターンを交代する
     isP1Turn = !isP1Turn;
 
