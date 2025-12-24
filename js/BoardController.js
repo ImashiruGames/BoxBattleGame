@@ -147,6 +147,13 @@ async function ApplyDamageTo(target,damage){
 }
 
 function updateHint(x){
+    // ******************************************************** //
+    // 箱それぞれにx,y座標を指定しているうちのx座標を引数に取る。
+    //
+    //　一番上に埋まっていたら、
+    //     何もしない
+    // 
+
     //一番下を探す
     let targetX = x - 1;
 
@@ -167,6 +174,15 @@ function updateHint(x){
 
 
 async function playmove(x) {
+    // ******************************************************** //
+    // 箱それぞれにx,y座標を指定しているうちのx座標を引数に取る。
+    //
+    // １．checkIndex: マウスの置かれている箱から、重力を帯びた箱がどこに落ちるかの番号
+    //     targetBox: 実際の箱そのもののエレメント
+    //
+    // ２．
+
+
     let targetX = x;
     let moveSuccess = false; //ちゃんと置けたか確認
 
@@ -213,6 +229,7 @@ async function playmove(x) {
 
             moveHistory.push(checkIndex);
             damageHistory.push(damage);
+            skillHistory.push(skillBonuses[playerNum]);
 //ダメージ管理部分↑
             isP1Turn = !isP1Turn;
             moveSuccess = true;

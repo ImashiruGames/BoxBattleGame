@@ -4,6 +4,10 @@
 //攻撃力nとは、1.n倍の威力で攻撃することにしたい
 
 undoBtnEl.addEventListener("click",function(){
+    // *************************************************** //
+    // undoBtnにクリックイベントの付与
+    // →コンピュータモードなら、自分の番に再び戻す処理（2回戻す。)
+    // *************************************************** //
 
     if(IS_CPU_MODE){
         undo();
@@ -14,31 +18,50 @@ undoBtnEl.addEventListener("click",function(){
 
 let gridCells = document.querySelectorAll(".box");
 
-// やりたいこと→Effectbuttonを作って、それを押すことでエフェクトが確認できる
-
-// let skillcard = document.createElement("div");
-// skillcard.classList.add("skillcard");
-// mainstage.appendChild(skillcard);
-
 function hint(checkIndex){
+    // ******************************************************* //
+    // checkIndex: ここに置きたい！という箱番号
+    // それに、.is-highlightと.is-p1を付与。
+    // ********************************************************//
+
     gridCells[checkIndex].classList.add("is-highlight");
     if(isP1Turn){gridCells[checkIndex].classList.add("is-p1");}
     else{gridCells[checkIndex].classList.add("is-p2")}
 }
 
 function removehint(checkIndex){
+    // ***************************************************** //
+    // checkIndex:ここが光ってる（hint関数で光らせた）という箱番号
+    // それの.is-highlightと.is-p1を削除
+    // ***************************************************** //
     gridCells[checkIndex].classList.remove("is-highlight");
     if(isP1Turn){gridCells[checkIndex].classList.remove("is-p1");}
     else{gridCells[checkIndex].classList.remove("is-p2");}
 }
 
 function undo(){
+    // ****************************************************** //
+    // (置いた箱の履歴)が0なら何もしない。
+    //
+    // moveHistory、damageHistoryの最後尾を見て
+    // 箱を消す処理と、ダメージを戻す処理を行う。
+    //
+    // ダメージを戻す処理のとき、HPが規定数以上に戻れば色を書き換える。
+    //
+    // もろもろの処理が完了したら、turnを一つ戻す。
+    //
+    // ********************************************************* //
 
     if(moveHistory.length === 0) return;
 
 
     let beforeturnbox = gridCells[moveHistory.pop()];
     let beforedamage = damageHistory.pop();
+
+    skillHistory.pop();
+    let removeplayerNum = isP1Turn ? 2:1 ;
+    Debug.innerText = skillBonuses[removeplayerNum];
+    skillBonuses[removeplayerNum] = skillHistory[skillHistory.length-2]
 
     let remainElem,hpBar,hp,maxHp;
     if(isP1Turn){
