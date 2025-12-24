@@ -105,7 +105,7 @@ async function ApplyDamageTo(target,damage){
 
         let ratio = 100*currentHP/maxHP;
 
-        if(ratio <= 20){
+        if(ratio <= 25){
             setTimeout(()=>{
                 remainElem.style.color = "red";
                 hpBar.style.backgroundColor = "red";

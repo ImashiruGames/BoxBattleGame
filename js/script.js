@@ -36,39 +36,50 @@ function undo(){
 
     if(moveHistory.length === 0) return;
 
-    let remainElem,hpBar
-    if(isP1Turn){
-        remainElem = p1HpTextEl;
-        hpBar = p1HpBarEl;
-    }
-    else{
-        remainElem = p2HpTextEl;
-        hpBar = p2HpBarEl;
-    }
 
     let beforeturnbox = gridCells[moveHistory.pop()];
     let beforedamage = damageHistory.pop();
 
+    let remainElem,hpBar,hp,maxHp;
     if(isP1Turn){
-    // 前のターンのボックスを戻す
-        beforeturnbox.classList.remove("is-p2");
-    // 前のターンのダメージを戻す
+        remainElem = p1HpTextEl;
+        hpBar = p1HpBarEl;
         p1Hp += beforedamage;
-        p1HpTextEl.innerText = p1Hp;
-        p1HpBarEl.style.width = `${100*p1Hp/P1MAXHP}%`; 
+        hp = p1Hp;
+        maxHp = P1MAXHP;
 
+        beforeturnbox.classList.remove("is-p2");
     }
     else{
-        beforeturnbox.classList.remove("is-p1");
-
+        remainElem = p2HpTextEl;
+        hpBar = p2HpBarEl;
         p2Hp += beforedamage;
-        p2HpTextEl.innerText = p2Hp;
-        p2HpBarEl.style.width = `${100*p2Hp/P2MAXHP}%`;
-    }
-    beforeturnbox.state = 0;
-    
-    
+        hp = p2Hp;
+        maxHp = P2MAXHP;
 
+        beforeturnbox.classList.remove("is-p1");
+    }
+    let ratio = 100*hp/maxHp
+
+    remainElem.innerText = hp;
+    hpBar.style.width = `${ratio}%`;
+    beforeturnbox.state = 0;
+
+    // remainElem.style.color = rgb(59, 209, 35);
+    // hpBar.style.backgroundColor = rgb(59, 209, 35);
+    if(ratio > 50){
+        setTimeout(()=>{
+            remainElem.style.color = "rgb(59, 209, 35)";
+            hpBar.style.backgroundColor = "rgb(59, 209, 35)";
+        },500)
+    }
+    else if(ratio > 25){
+        setTimeout(()=>{
+            remainElem.style.color = "orange";
+            hpBar.style.backgroundColor = "yellow";
+        },500)
+    }
+    
 
     // プレイヤーターンを交代する
     isP1Turn = !isP1Turn;
