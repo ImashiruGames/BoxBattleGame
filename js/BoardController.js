@@ -229,7 +229,9 @@ async function playmove(x) {
 
             moveHistory.push(checkIndex);
             damageHistory.push(damage);
-            skillHistory.push(skillBonuses[playerNum]);
+            //辞書型を保存したいときこう書くらしい、改めてお勉強しなきゃ
+            skillHistory.push(Object.assign({}, skillBonuses));
+            
 //ダメージ管理部分↑
             isP1Turn = !isP1Turn;
             moveSuccess = true;

@@ -59,9 +59,13 @@ function undo(){
     let beforedamage = damageHistory.pop();
 
     skillHistory.pop();
-    let removeplayerNum = isP1Turn ? 2:1 ;
-    Debug.innerText = skillBonuses[removeplayerNum];
-    skillBonuses[removeplayerNum] = skillHistory[skillHistory.length-2]
+    if (skillHistory.length > 0) {
+        // 配列の最後（最新の状態）を取得して、現在の skillBonuses に上書き
+        skillBonuses = Object.assign({}, skillHistory[skillHistory.length - 1]);
+    } else {
+        // 履歴が空なら初期状態に戻す
+        skillBonuses = { 1: 0, 2: 0 };
+    }
 
     let remainElem,hpBar,hp,maxHp;
     if(isP1Turn){
