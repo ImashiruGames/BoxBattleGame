@@ -45,7 +45,7 @@ function undo(){
     // 前のターンのダメージを戻す
         p1Hp += beforedamage;
         p1HpTextEl.innerText = p1Hp;
-        p1HpBarEl.style.width = `${p1Hp}%`; 
+        p1HpBarEl.style.width = `${100*p1Hp/P1MAXHP}%`; 
 
     }
     else{
@@ -53,7 +53,7 @@ function undo(){
 
         p2Hp += beforedamage;
         p2HpTextEl.innerText = p2Hp;
-        p2HpBarEl.style.width = `${p2Hp}%`;
+        p2HpBarEl.style.width = `${100*p2Hp/P2MAXHP}%`;
     }
     beforeturnbox.state = 0;
     

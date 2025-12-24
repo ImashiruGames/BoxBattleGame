@@ -5,6 +5,13 @@ updateCursor();
 mainstage.style.width = `${BOXSIZE*STAGE_X}px`;
 mainstage.style.height = `${BOXSIZE*STAGE_Y}px`;
 
+// 画面展開
+//メインステージ作成
+p1maxHPTextEl.innerText = P1MAXHP;
+p2maxHPTextEl.innerText = P2MAXHP;
+p1HpTextEl.innerText = P1MAXHP;
+p2HpTextEl.innerText = P2MAXHP;
+
 for(let i=0;i<STAGE_Y;i++){
     for(let j=0;j<STAGE_X;j++){
         let box = document.createElement("div");
@@ -28,8 +35,6 @@ for(let i=0;i<STAGE_Y;i++){
                 },5);
             }
         })
-
-        
 
         box.addEventListener("mouseenter",function(){
             if(IS_CPU_MODE && !isP1Turn) return;
@@ -68,18 +73,20 @@ for(let i=0;i<STAGE_Y;i++){
 
 // HP関連　0になったときのwin画面出す処理も今は入ってる
 async function ApplyDamageTo(target,damage){
-    let currentHP,remainElem,hpBar,winner;
+    let currentHP,remainElem,hpBar,winner,maxHP;
     // targetは"1P""2P"のどちらかを受け取る
     if(target==="1P"){
         currentHP = p1Hp;
         remainElem = p1HpTextEl;
         hpBar = p1HpBarEl;
+        maxHP = P1MAXHP;
         winner = "2P"
     }
     else{
         currentHP = p2Hp;
         remainElem = p2HpTextEl;
         hpBar = p2HpBarEl;
+        maxHP = P2MAXHP;
         winner = "1P"
     }
 
@@ -133,7 +140,7 @@ async function ApplyDamageTo(target,damage){
             p2Hp = currentHP;
         }
 
-        hpBar.style.width = `${currentHP}%`;
+        hpBar.style.width = `${100*currentHP/maxHP}%`;
     }
 }
 
@@ -155,6 +162,7 @@ function updateHint(x){
         hint(checkIndex);
     }
 }
+
 
 async function playmove(x) {
     let targetX = x;
@@ -204,7 +212,7 @@ async function playmove(x) {
             moveHistory.push(checkIndex);
             damageHistory.push(damage);
 //ダメージ管理部分↑
-           isP1Turn = !isP1Turn;
+            isP1Turn = !isP1Turn;
             moveSuccess = true;
 
             updateCursor();

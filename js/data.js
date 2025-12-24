@@ -9,11 +9,15 @@ const p2HpBarEl = document.getElementById("enemy-hp");
 const p1HpTextEl = document.getElementById("p1-remain-counter");          // こっちの数字エレメント→100/100
 const p2HpTextEl = document.getElementById("p2-remain-counter");
 
-let p1Hp = 100;                                              // HP変数
-let p2Hp = 100;
+const p1maxHPTextEl = document.getElementById("p1-maxHP");                // 100/100←こっちの数字エレメント
+const p2maxHPTextEl = document.getElementById("p2-maxHP");
 
-const P1MAXHP = 100;
-const P2MAXHP = 100;
+const P1MAXHP = 150;
+const P2MAXHP = 40;
+
+let p1Hp = P1MAXHP;                                              // HP変数(こちらではいじらない)
+let p2Hp = P2MAXHP;
+
 
 // メインステージ
 const mainstage = document.getElementById("mainStage");                 // メインステージの大枠エレメント

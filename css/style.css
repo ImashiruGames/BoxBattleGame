@@ -155,6 +155,7 @@
 }
 .hud-header .hp-container .hp-bar {
   height: 100%;
+  width: 100%;
   background: lime;
   box-shadow: 0 0 10px lime;
   transition: width 0.5s ease-out;
@@ -194,7 +195,6 @@
   flex-direction: column;
   justify-content: flex-end; /* 情報は下に寄せる */
   padding: 20px;
-  border: white 1px solid;
   /* キャラ立ち絵 */
 }
 .battle-field .side-panel.p1-side {
@@ -215,7 +215,6 @@
   background-size: contain;
   z-index: -1; /* 文字の後ろへ */
   opacity: 0.8;
-  border: 1px solid white;
 }
 .battle-field .side-panel .info-box {
   background: rgba(0, 20, 40, 0.7); /* 半透明の紺色 */
@@ -341,19 +340,6 @@ body.cpu-turn .battle-field .board-area #undoBtn {
 /* このクラスがつくとアニメーションする */
 .slash-effect {
   animation: slash 0.3s ease-out infinite; /* 0.3秒で実行 */
-}
-
-#animationBox {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 68px;
-  height: 70px;
-  background-color: purple;
-  border: 1px solid purple;
-  display: none;
-  pointer-events: none;
-  z-index: 10;
 }
 
 /* 追加のおすすめCSS */
