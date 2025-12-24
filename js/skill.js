@@ -12,10 +12,10 @@ let skillData = [
     // [1]:skill-descに書く内容
     //
     // ***************************************************** //
+    ["デバッグ攻撃","デバッグダメージ"],
     ["恐怖の一撃","4つ以上そろえるまでダメージが出せない代わりに大ダメージ"],
     ["駆け出しの攻撃","3つ以上そろえるとダメージを与える（通常）"],
     ["俊敏なる攻撃","2つ揃いでもダメージを与えられる代わりにダメージは軽い"],
-    ["デバッグ攻撃","デバッグダメージ"],
     ["バックスラッシュ","左上から斜めにそろえた場合、ダメージが大きくなる(1.2倍)"],
     ["不戦の毒",`列に関係なく${Poisoning()}ダメージを与える`],
     ["連続攻撃","連続でダメージを与えると、ダメージが2倍,3倍と伸びる"]
@@ -30,10 +30,10 @@ let skillFunctions = [
     // 4.yoko  "-"
     // 5.playernum(1 or 2)
     // ******************************************************** //
+    debugattack,
     fatalDamage,
     NormalAttack,
     MiniAttack,
-    debugattack,
     Backslash,
     Poisoning,
     sequenceAttack
@@ -47,7 +47,17 @@ let skillInfoGenerators = [
     // 引数は、1.playernum(1 or 2)
     // ******************************************************** //
 
-
+    //.デバッグ
+    function(playernum){
+        let damage = debugattack(0,0,0,0,playernum)
+        return [
+            `5列：${damage}(→${damage+2})`,
+            `4列：${damage}(→${damage+2})`,
+            `3列：${damage}(→${damage+2})`,
+            `2列：${damage}(→${damage+2})`,
+            `1列：${damage}(→${damage+2})`
+        ]
+    },
     //0.恐怖の一撃
     function(){
         return [
@@ -76,17 +86,6 @@ let skillInfoGenerators = [
             "3列：10",
             "2列：5",
             "1列：-"
-        ]
-    },
-    //3.デバッグ
-    function(playernum){
-        let damage = debugattack(0,0,0,0,playernum)
-        return [
-            `5列：${damage}(→${damage+2})`,
-            `4列：${damage}(→${damage+2})`,
-            `3列：${damage}(→${damage+2})`,
-            `2列：${damage}(→${damage+2})`,
-            `1列：${damage}(→${damage+2})`
         ]
     },
     //4.バックスラッシュ
@@ -179,13 +178,13 @@ function MiniAttack(diag1,diag2,tate,yoko){
 
 function debugattack(diag1,diag2,tate,yoko,playernum){
     let damage = 1;
-    let isUp = Math.max(diag1,diag2,tate,yoko)>=1;
+    let isUp = Math.max(diag1,diag2,tate,yoko)>=2;
     if(isUp){
         skillBonuses[playernum] += 1;
     }
     damage += skillBonuses[playernum]*2;
 
-    return damage*damage;
+    return damage;
 }
 
 function Backslash(diag1,diag2,tate,yoko){
@@ -239,3 +238,4 @@ function sequenceAttack(diag1,diag2,tate,yoko,playernum){
 
     return damage*(combo);
 }
+

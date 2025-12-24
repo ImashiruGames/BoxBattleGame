@@ -36,7 +36,10 @@ const p2SkillNameEl = document.getElementById("p2_skillname");
 
 const undoBtnEl = document.getElementById("undoBtn");                         // 一手戻るボタンエレメント
 let moveHistory = [];                                                     //　└一手ごとにどこに置いたかの配列
-let damageHistory = [];                                                    //　 一手ごとにどれだけダメージ与えたかの配列
+// let p1damageHistory = [];                                                    //　 一手ごとにどれだけダメージ与えたかの配列(レガシー)
+
+let p1HPHistory = [];                                                       //ダメージを与えた、ではなく、現HPを保存するほうが良いのでは…？と思って作ったやつ(12/25)
+let p2HPHistory = [];
 let skillHistory = [];  
 
 

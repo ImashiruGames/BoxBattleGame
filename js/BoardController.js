@@ -22,6 +22,8 @@ for(let i=0;i<STAGE_Y;i++){
         box.classList.add("box");
 
         box.addEventListener("click",async function(){
+            // Debug.innerText = p1HPHistory;
+
             if(IS_CPU_MODE && !isP1Turn) return;
 
             body.classList.remove("my-turn");
@@ -224,14 +226,18 @@ async function playmove(x) {
             let playerNum = isP1Turn ? 1:2;
             let damage = skillFunctions[skillIndex](diag1,diag2,tate,yoko,playerNum);
             
+            p1HPHistory.push(p1Hp);
+            p2HPHistory.push(p2Hp);
+
             DamageList(playerNum);
             await ApplyDamageTo(damageTarget,damage);
 
             moveHistory.push(checkIndex);
-            damageHistory.push(damage);
+            // p1damageHistory.push(damage);
+
             //辞書型を保存したいときこう書くらしい、改めてお勉強しなきゃ
             skillHistory.push(Object.assign({}, skillBonuses));
-            
+
 //ダメージ管理部分↑
             isP1Turn = !isP1Turn;
             moveSuccess = true;

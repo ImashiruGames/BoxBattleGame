@@ -10,7 +10,7 @@ function downloadBattleLog(p1Name,p2Name,winnerName) {
         p2Skill: p2SkillNameEl.skill,                 // 2Pのスキル
         history: {
             moves: moveHistory,              // どこに置いたか
-            damages: damageHistory            // ダメージの履歴
+            damages: p1damageHistory            // ダメージの履歴
         }
     };
 

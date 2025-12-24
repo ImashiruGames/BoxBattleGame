@@ -56,7 +56,9 @@ function undo(){
 
 
     let beforeturnbox = gridCells[moveHistory.pop()];
-    let beforedamage = damageHistory.pop();
+    // let beforedamage = p1damageHistory.pop();
+    let beforep1HP = p1HPHistory.pop();
+    let beforep2HP = p2HPHistory.pop();
 
     skillHistory.pop();
     if (skillHistory.length > 0) {
@@ -67,43 +69,54 @@ function undo(){
         skillBonuses = { 1: 0, 2: 0 };
     }
 
-    let remainElem,hpBar,hp,maxHp;
+    let remainElem_P1,remainElem_P2,hpBar_P1,hpBar_P2,hp,maxHp;
     if(isP1Turn){
-        remainElem = p1HpTextEl;
-        hpBar = p1HpBarEl;
-        p1Hp += beforedamage;
-        hp = p1Hp;
-        maxHp = P1MAXHP;
-
         beforeturnbox.classList.remove("is-p2");
     }
     else{
-        remainElem = p2HpTextEl;
-        hpBar = p2HpBarEl;
-        p2Hp += beforedamage;
-        hp = p2Hp;
-        maxHp = P2MAXHP;
-
         beforeturnbox.classList.remove("is-p1");
     }
-    let ratio = 100*hp/maxHp
+    remainElem_P1 = p1HpTextEl;
+    remainElem_P2 = p2HpTextEl;
+    hpBar_P1 = p1HpBarEl;
+    hpBar_P2 = p2HpBarEl;
+    p1Hp = beforep1HP;
+    p2Hp = beforep2HP;
+    let ratio_p1 = 100*p1Hp/P1MAXHP;
+    let ratio_p2 = 100*p2Hp/P2MAXHP;
 
-    remainElem.innerText = hp;
-    hpBar.style.width = `${ratio}%`;
+    Debug.innerText = p2HPHistory;
+
+    remainElem_P1.innerText = p1Hp;
+    hpBar_P1.style.width = `${ratio_p1}%`;
+    remainElem_P2.innerText = p2Hp;
+    hpBar_P2.style.width = `${ratio_p2}%`;
     beforeturnbox.state = 0;
 
-    // remainElem.style.color = rgb(59, 209, 35);
-    // hpBar.style.backgroundColor = rgb(59, 209, 35);
-    if(ratio > HP_alerttiming_yellow){
+
+    if(ratio_p1 > HP_alerttiming_yellow){
         setTimeout(()=>{
-            remainElem.style.color = "rgb(59, 209, 35)";
-            hpBar.style.backgroundColor = "rgb(59, 209, 35)";
+            remainElem_P1.style.color = "rgb(59, 209, 35)";
+            hpBar_P1.style.backgroundColor = "rgb(59, 209, 35)";
         },500)
     }
-    else if(ratio > HP_alerttiming_red){
+    else if(ratio_p1 > HP_alerttiming_red){
         setTimeout(()=>{
-            remainElem.style.color = "orange";
-            hpBar.style.backgroundColor = "yellow";
+            remainElem_P1.style.color = "orange";
+            hpBar_P1.style.backgroundColor = "yellow";
+        },500)
+    }
+
+    if(ratio_p2 > HP_alerttiming_yellow){
+        setTimeout(()=>{
+            remainElem_P2.style.color = "rgb(59, 209, 35)";
+            hpBar_P2.style.backgroundColor = "rgb(59, 209, 35)";
+        },500)
+    }
+    else if(ratio_p1 > HP_alerttiming_red){
+        setTimeout(()=>{
+            remainElem_P2.style.color = "orange";
+            hpBar_P2.style.backgroundColor = "yellow";
         },500)
     }
     
