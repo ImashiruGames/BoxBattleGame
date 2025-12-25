@@ -69,56 +69,19 @@ function undo(){
         skillBonuses = { 1: 0, 2: 0 };
     }
 
-    let remainElem_P1,remainElem_P2,hpBar_P1,hpBar_P2,hp,maxHp;
+    let remainElem_P1,remainElem_P2,hpBar_P1,hpBar_P2;
     if(isP1Turn){
         beforeturnbox.classList.remove("is-p2");
     }
     else{
         beforeturnbox.classList.remove("is-p1");
     }
-    remainElem_P1 = p1HpTextEl;
-    remainElem_P2 = p2HpTextEl;
-    hpBar_P1 = p1HpBarEl;
-    hpBar_P2 = p2HpBarEl;
     p1Hp = beforep1HP;
     p2Hp = beforep2HP;
-    let ratio_p1 = 100*p1Hp/P1MAXHP;
-    let ratio_p2 = 100*p2Hp/P2MAXHP;
-
-    Debug.innerText = p2HPHistory;
-
-    remainElem_P1.innerText = p1Hp;
-    hpBar_P1.style.width = `${ratio_p1}%`;
-    remainElem_P2.innerText = p2Hp;
-    hpBar_P2.style.width = `${ratio_p2}%`;
     beforeturnbox.state = 0;
 
-
-    if(ratio_p1 > HP_alerttiming_yellow){
-        setTimeout(()=>{
-            remainElem_P1.style.color = "rgb(59, 209, 35)";
-            hpBar_P1.style.backgroundColor = "rgb(59, 209, 35)";
-        },500)
-    }
-    else if(ratio_p1 > HP_alerttiming_red){
-        setTimeout(()=>{
-            remainElem_P1.style.color = "orange";
-            hpBar_P1.style.backgroundColor = "yellow";
-        },500)
-    }
-
-    if(ratio_p2 > HP_alerttiming_yellow){
-        setTimeout(()=>{
-            remainElem_P2.style.color = "rgb(59, 209, 35)";
-            hpBar_P2.style.backgroundColor = "rgb(59, 209, 35)";
-        },500)
-    }
-    else if(ratio_p1 > HP_alerttiming_red){
-        setTimeout(()=>{
-            remainElem_P2.style.color = "orange";
-            hpBar_P2.style.backgroundColor = "yellow";
-        },500)
-    }
+    updateHPDisplay(1);
+    updateHPDisplay(2);
     
 
     // プレイヤーターンを交代する

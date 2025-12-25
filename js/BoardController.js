@@ -105,22 +105,18 @@ async function ApplyDamageTo(target,damage){
         remainElem.innerText = currentHP;
         // HPを減らし終わった
 
-        let ratio = 100*currentHP/maxHP;
+        if(target==="1P"){
+            p1Hp = currentHP;
+        }
+        else{
+            p2Hp = currentHP;
+        }
 
-        if(ratio <= HP_alerttiming_red){
-            setTimeout(()=>{
-                remainElem.style.color = "red";
-                hpBar.style.backgroundColor = "red";
-            },500)
-        }
-        else if(ratio <= HP_alerttiming_yellow){
-            setTimeout(()=>{
-                remainElem.style.color = "orange";
-                hpBar.style.backgroundColor = "yellow";
-            },500)
-        }
+        updateHPDisplay(1);
+        updateHPDisplay(2);
+
 // 勝利処理
-        if(ratio <= 0){
+        if(currentHP <= 0){
             currentHP = 0;
 
             //ゲームセット判定関数
@@ -137,14 +133,6 @@ async function ApplyDamageTo(target,damage){
             };
         }
 
-        if(target==="1P"){
-            p1Hp = currentHP;
-        }
-        else{
-            p2Hp = currentHP;
-        }
-
-        hpBar.style.width = `${ratio}%`;
     }
 }
 
@@ -222,12 +210,13 @@ async function playmove(x) {
             let tate = countVertical(checkIndex,newState);
             let yoko = countHorizontal(checkIndex,newState);
 
-//ダメージ管理部分↓
-            let playerNum = isP1Turn ? 1:2;
-            let damage = skillFunctions[skillIndex](diag1,diag2,tate,yoko,playerNum);
-            
+//ダメージ管理部分↓            
             p1HPHistory.push(p1Hp);
             p2HPHistory.push(p2Hp);
+
+            let playerNum = isP1Turn ? 1:2;
+            let damage = skillFunctions[skillIndex](diag1,diag2,tate,yoko,playerNum);
+
 
             DamageList(playerNum);
             await ApplyDamageTo(damageTarget,damage);

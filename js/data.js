@@ -13,7 +13,7 @@ const p1maxHPTextEl = document.getElementById("p1-maxHP");                // 100
 const p2maxHPTextEl = document.getElementById("p2-maxHP");
 
 const P1MAXHP = 150;
-const P2MAXHP = 40;
+const P2MAXHP = 150;
 
 const HP_alerttiming_red = 20;
 const HP_alerttiming_yellow = 50;
@@ -71,3 +71,43 @@ let isGameset = false;                                                // どっ�
 
 //CPU対戦モードかどうか
 const IS_CPU_MODE = true;
+
+
+function updateHPDisplay(playerNum) {
+    let currentHP, maxHP, textElem, barElem;
+
+    // 1. 対象の変数をセット
+    if (playerNum === 1) {
+        currentHP = p1Hp;
+        maxHP = P1MAXHP;
+        textElem = p1HpTextEl;
+        barElem = p1HpBarEl;
+    } else {
+        currentHP = p2Hp;
+        maxHP = P2MAXHP;
+        textElem = p2HpTextEl;
+        barElem = p2HpBarEl;
+    }
+
+    // 2. 基本の更新（数字とバーの長さ）
+    textElem.innerText = currentHP;
+    let ratio = (currentHP / maxHP) * 100;
+    barElem.style.width = `${ratio}%`;
+
+    // 3. 色の判定（ここを共通化！）
+    // まずデフォルトの色（緑）に戻す設定をしておく
+    let textColor = "rgb(59, 209, 35)"; // 緑
+    let barColor = "lime"; // CSSで指定している元の色（または rgb(0, 255, 0)）
+
+    if (ratio <= HP_alerttiming_red) {
+        textColor = "red";
+        barColor = "red";
+    } else if (ratio <= HP_alerttiming_yellow) {
+        textColor = "orange";
+        barColor = "yellow";
+    }
+
+    // 色を適用
+    textElem.style.color = textColor;
+    barElem.style.backgroundColor = barColor;
+}

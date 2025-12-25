@@ -18,7 +18,8 @@ let skillData = [
     ["俊敏なる攻撃","2つ揃いでもダメージを与えられる代わりにダメージは軽い"],
     ["バックスラッシュ","左上から斜めにそろえた場合、ダメージが大きくなる(1.2倍)"],
     ["不戦の毒",`列に関係なく${Poisoning()}ダメージを与える`],
-    ["連続攻撃","連続でダメージを与えると、ダメージが2倍,3倍と伸びる"]
+    ["連続攻撃","連続でダメージを与えると、ダメージが2倍,3倍と伸びる"],
+    ["回復攻撃","4列以上そろえると、与えたダメージの半分回復💖"]
 ]
 let skillFunctions = [
     // ******************************************************* //
@@ -28,7 +29,7 @@ let skillFunctions = [
     // 2.diag2 "/"
     // 3.tate  "|"
     // 4.yoko  "-"
-    // 5.playernum(1 or 2)
+    // 5.playernum(1 or 2)←これはこの攻撃をしたplayerのnum
     // ******************************************************** //
     debugattack,
     fatalDamage,
@@ -36,7 +37,8 @@ let skillFunctions = [
     MiniAttack,
     Backslash,
     Poisoning,
-    sequenceAttack
+    sequenceAttack,
+    healingAttack
 ];
 let skillInfoGenerators = [
     // ******************************************************** //
@@ -116,6 +118,16 @@ let skillInfoGenerators = [
             `　3列：${10*(combos+1)}`,
             `　2列：-`,
             `　1列：-`,
+        ]
+    },
+    //回復攻撃
+    function(){
+        return [
+            "5列：50(25回復)",
+            "4列：30(15回復)",
+            "3列：10",
+            "2列：-",
+            "1列：-"
         ]
     }
 ]
@@ -239,3 +251,31 @@ function sequenceAttack(diag1,diag2,tate,yoko,playernum){
     return damage*(combo);
 }
 
+function healingAttack(diag1,diag2,tate,yoko,playernum){
+    let count = Math.max(diag1,diag2,tate,yoko);
+    let damage=0;
+    let healamount = 0;
+    if(count>=5){
+        damage = 50;
+        healamount = 25;
+    }
+    else if(count>=4){
+        damage = 30;
+        healamount = 15;
+    }
+    else if(count===3){
+        damage = 10;
+    }
+
+    if(playernum===1){
+        p1Hp = Math.min(P1MAXHP,+p1Hp+healamount);
+
+        updateHPDisplay(1);
+    }
+    else{
+        p2Hp = Math.min(P2MAXHP,+p2Hp+healamount);
+
+        updateHPDisplay(2);
+    }
+    return damage;
+}
