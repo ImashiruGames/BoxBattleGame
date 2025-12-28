@@ -5,3 +5,4 @@ winscreen.style.height = `${BOXSIZE*STAGE_Y}px`;
 
 // saveButton
 saveBtnEl.style.opacitiy = 1;
+nextStageBtnEl.style.opacity = 1;

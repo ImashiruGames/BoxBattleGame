@@ -16,7 +16,6 @@ undoBtnEl.addEventListener("click",function(){
 
 })
 
-let gridCells = document.querySelectorAll(".box");
 
 function hint(checkIndex){
     // ******************************************************* //
@@ -82,7 +81,6 @@ function undo(){
 
     updateHPDisplay(1);
     updateHPDisplay(2);
-    
 
     // プレイヤーターンを交代する
     isP1Turn = !isP1Turn;

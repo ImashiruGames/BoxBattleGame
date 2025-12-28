@@ -1,16 +1,15 @@
 //playerskill選択←あとで、プレイヤーに自由に選択できるようにさせる
-p1SkillNameEl.skill = 1;
-p2SkillNameEl.skill = 1;
+p1SkillNameEl.skill = 2;
+p2SkillNameEl.skill = 2;
 
 initSkillSelector();
 
 //下部にスキルの詳細をつける
 // initDamageList();
-DamageList(1);
-DamageList(2);
+StatusList(1);
+StatusList(2);
 //
 SkillDetail();
-
 
 function initSkillSelector(){
 
@@ -33,12 +32,12 @@ function initSkillSelector(){
 
     p1Select.addEventListener("change",function(){
         p1SkillNameEl.skill = parseInt(this.value);
-        DamageList(1);
+        StatusList(1);
         SkillDetail();
     })
     p2Select.addEventListener("change",function(){
         p2SkillNameEl.skill = parseInt(this.value);
-        DamageList(2);
+        StatusList(2);
         SkillDetail();
     })
 }
@@ -53,18 +52,24 @@ function initDamageList(){
     //     listElement.classList.add("p1damagelist");
     //     document.getElementById("p1attack").appendChild(listElement);
     // }
-    DamageList(1);
-    DamageList(2);
+    StatusList(1);
+    StatusList(2);
 }
-function DamageList(playernum){
+
+//ここで、スキル名の3つをすべて監視する
+function StatusList(playernum){
 
     let damageEl,skillInfo
     if(playernum===1){
+        p1SkillNameEl.innerText = skillData[p1SkillNameEl.skill][0];
         damageEl = document.getElementById("p1damagelist");
+        document.getElementById("p1_description").innerText = skillData[p1SkillNameEl.skill][1];
         skillInfo = skillInfoGenerators[p1SkillNameEl.skill];
     }
     else{
+        p2SkillNameEl.innerText = skillData[p2SkillNameEl.skill][0];
         damageEl = document.getElementById("p2damagelist");
+        document.getElementById("p2_description").innerText = skillData[p2SkillNameEl.skill][1];
         skillInfo = skillInfoGenerators[p2SkillNameEl.skill];
     }
 

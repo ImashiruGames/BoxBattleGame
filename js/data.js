@@ -12,8 +12,8 @@ const p2HpTextEl = document.getElementById("p2-remain-counter");
 const p1maxHPTextEl = document.getElementById("p1-maxHP");                // 100/100←こっちの数字エレメント
 const p2maxHPTextEl = document.getElementById("p2-maxHP");
 
-const P1MAXHP = 150;
-const P2MAXHP = 150;
+let P1MAXHP = 100;
+let P2MAXHP = 100;
 
 const HP_alerttiming_red = 20;
 const HP_alerttiming_yellow = 50;
@@ -21,14 +21,18 @@ const HP_alerttiming_yellow = 50;
 
 let p1Hp = P1MAXHP;                                              // HP変数(こちらではいじらない)
 let p2Hp = P2MAXHP;
+let p1Attack = 0;
+let p2Attack = 0;
+let p1Defence = 0;
+let p2Defence = 0;
 
 
 // メインステージ
 const mainstage = document.getElementById("mainStage");                 // メインステージの大枠エレメント
 
 // ステージの広さ
-const STAGE_X = 6;                                                      //  └横幅に何ボックス作るか変数
-const STAGE_Y = 7;
+let STAGE_X = 10;                                                      //  └横幅に何ボックス作るか変数
+let STAGE_Y = 7;
 const BOXSIZE = 70;                                                     //      └box一つあたりの一辺のpxサイズ変数
 
 const p1SkillNameEl = document.getElementById("p1_skillname");                     // statusのスキルネーム欄エレメント
@@ -63,15 +67,26 @@ const p2Select = document.getElementById("p2-select");
 const winscreen = document.getElementById("winscreen");                 // 勝利時画面エレメント
 const winMessageEl = document.getElementById("winMessage");               //  └1Pの勝ち、とかを表示するエレメント
 const saveBtnEl = document.getElementById("saveBtn");
+const nextStageBtnEl = document.getElementById("nextStageBtn");
 
 // ターン経過のおさらいを見る用の保存リスト
 
 let isP1Turn = true;      
 let isGameset = false;                                                // どっちターンなのかの確認変数
 
-//CPU対戦モードかどうか
-const IS_CPU_MODE = true;
 
+let currentStage = 0; // 現在のステージ数
+
+// 敵のデータベース
+const enemyData = [
+    // [0]はダミー（ステージ1がindex 1になるように）
+    null, 
+    { name: "暴走したセキュリティ", hp: 40, skill: 2 ,atk: 0, def: 0}, // Stage 1
+    { name: "軍事用ドローン", hp: 60, skill: 3, atk: 0, def: 0 },      // Stage 2
+    { name: "ハッキングAI", hp: 80, skill: 4, atk: 20, def: 0 },        // Stage 3
+    { name: "ゲートキーパー", hp: 120, skill: 6, atk: 0, def: 30},      // Stage 4
+    { name: "マザーコンピューター", hp: 200, skill: 1, atk: 20, def: 20 } // Stage 5
+];
 
 function updateHPDisplay(playerNum) {
     let currentHP, maxHP, textElem, barElem;
@@ -111,3 +126,17 @@ function updateHPDisplay(playerNum) {
     textElem.style.color = textColor;
     barElem.style.backgroundColor = barColor;
 }
+
+function calculateDamage(baseDamage, attackerAtk, defenderDef){
+    if(baseDamage === 0) return 0;
+    let Power = baseDamage + attackerAtk;
+    let finaldamage = Math.max(Power - defenderDef,1);
+    return finaldamage;
+}
+
+
+
+
+
+//CPU対戦モードかどうか
+const IS_CPU_MODE = false;

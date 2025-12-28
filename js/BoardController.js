@@ -8,9 +8,9 @@ mainstage.style.height = `${BOXSIZE*STAGE_Y}px`;
 // 画面展開
 //メインステージ作成
 p1maxHPTextEl.innerText = P1MAXHP;
-p2maxHPTextEl.innerText = P2MAXHP;
 p1HpTextEl.innerText = P1MAXHP;
-p2HpTextEl.innerText = P2MAXHP;
+
+if(IS_CPU_MODE) startNextBattle();
 
 for(let i=0;i<STAGE_Y;i++){
     for(let j=0;j<STAGE_X;j++){
@@ -73,6 +73,52 @@ for(let i=0;i<STAGE_Y;i++){
     }
 }
 
+let gridCells = document.querySelectorAll(".box");
+
+nextStageBtnEl.addEventListener("click",function(){
+    startNextBattle();
+    StatusList(2);
+    resetBoard();
+})
+
+function resetBoard(){
+
+    let gridCells = document.querySelectorAll(".box");
+    gridCells.forEach((el)=>{
+        el.state = BOX_STATE.EMPTY;
+        el.classList.remove("is-p1","is-p2","is-highlight");
+        el.innerTEXT = "";
+    })
+}
+
+function startNextBattle(){
+    currentStage++;
+
+    let nextEnemy = enemyData[currentStage];
+    P2MAXHP = nextEnemy.hp;
+    p2Hp = P2MAXHP;
+    p2maxHPTextEl.innerText = P2MAXHP;
+    p2SkillNameEl.skill = nextEnemy.skill;
+
+    updateHPDisplay(2);
+    
+    moveHistory = [];
+    p1HPHistory = [];
+    p2HPHistory = [];
+    skillHistory = [];
+    skillBonuses = {1:0,2:0};
+
+    isP1Turn = true;
+    isGameset = false;
+    turnEl.innerText = "1Pのターン";
+    turnEl.classList.remove("thinking-mode");
+
+    winscreen.style.opacity = 0;
+    winscreen.style.pointerEvents = "none";
+    undoBtnEl.style.pointerEvents = "auto";
+    updateCursor();
+}
+
 // HP関連　0になったときのwin画面出す処理も今は入ってる
 async function ApplyDamageTo(target,damage){
     let currentHP,remainElem,hpBar,winner,maxHP;
@@ -127,12 +173,12 @@ async function ApplyDamageTo(target,damage){
             turnEl.innerText = "勝負あり！";
             winscreen.style.opacity = 1;
             winscreen.style.pointerEvents = "auto";
+            if(!IS_CPU_MODE) nextStageBtnEl.style.pointerEvents = "none";nextStageBtnEl.style.opacity=0;
             undoBtnEl.style.pointerEvents = "none";
             saveBtnEl.onclick = function() {
             downloadBattleLog("1P","2P",winner);
             };
         }
-
     }
 }
 
@@ -162,7 +208,6 @@ function updateHint(x){
     }
 }
 
-
 async function playmove(x) {
     // ******************************************************** //
     // 箱それぞれにx,y座標を指定しているうちのx座標を引数に取る。
@@ -184,7 +229,7 @@ async function playmove(x) {
 
             gridCells[checkIndex].classList.remove("is-highlight");
 
-            let newState, colorClass, nextTurnText, damageTarget, skillIndex;
+            let newState, colorClass, nextTurnText, damageTarget, skillIndex, attackerAtk, DefenderDef;
 
             if(isP1Turn){
                 newState = BOX_STATE.P1;
@@ -192,6 +237,8 @@ async function playmove(x) {
                 nextTurnText = "2Pのターン";
                 damageTarget = "2P";
                 skillIndex = p1SkillNameEl.skill;
+                attackerAtk = p1Attack;
+                DefenderDef = p2Defence;
             }
             else{
                 newState = BOX_STATE.P2;
@@ -199,6 +246,8 @@ async function playmove(x) {
                 nextTurnText = "1Pのターン";
                 damageTarget = "1P";
                 skillIndex = p2SkillNameEl.skill;
+                attackerAtk = p2Attack;
+                DefenderDef = p1Defence;
             }
 
             targetBox.state = newState;
@@ -217,8 +266,9 @@ async function playmove(x) {
             let playerNum = isP1Turn ? 1:2;
             let damage = skillFunctions[skillIndex](diag1,diag2,tate,yoko,playerNum);
 
+            damage = calculateDamage(damage,attackerAtk,DefenderDef);
 
-            DamageList(playerNum);
+            StatusList(playerNum);
             await ApplyDamageTo(damageTarget,damage);
 
             moveHistory.push(checkIndex);
