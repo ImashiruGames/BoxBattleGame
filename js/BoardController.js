@@ -81,6 +81,32 @@ nextStageBtnEl.addEventListener("click",function(){
     resetBoard();
 })
 
+modeChangeEl.addEventListener("click",function(){
+    if(IS_CPU_MODE){
+        this.innerText = "2人対戦に変更する";
+        currentStage = Math.max(0,currentStage-1);
+        p1Hp = 100;
+        p1HpTextEl.innerText = p1Hp;
+        updateHPDisplay(1);
+        resetBoard();
+        set2PBattle();
+
+    }
+    else{
+        this.innerText = "CPU_modeに切り替える";
+        p1Hp = 100;
+        p1HpTextEl.innerText = p1Hp;
+        updateHPDisplay(1);
+        startNextBattle();
+        resetBoard();
+
+
+    Debug.innerText = p1hp;
+    }
+
+    IS_CPU_MODE = !IS_CPU_MODE;
+})
+
 function resetBoard(){
 
     let gridCells = document.querySelectorAll(".box");
@@ -89,6 +115,17 @@ function resetBoard(){
         el.classList.remove("is-p1","is-p2","is-highlight");
         el.innerTEXT = "";
     })
+}
+
+function set2PBattle(){
+    p1MAXHP = 100;
+    P2MAXHP = 100;
+    p1maxHPTextEl.innerText = p1MAXHP;
+    p2maxHPTextEl.innerText = P2MAXHP;
+    p1Hp = p1MAXHP;
+    p2Hp = P2MAXHP;
+    updateHPDisplay(1);
+    updateHPDisplay(2);
 }
 
 function startNextBattle(){

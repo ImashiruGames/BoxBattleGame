@@ -1,6 +1,6 @@
 const Debug = document.getElementById("debugger");                      // デバッグエレメント
 const body = document.body;
-
+const modeChangeEl = document.getElementById("modeChange");
 const turnEl = document.getElementById("turn");                           // ターン確認エレメント
 
 // HPバー取得
@@ -139,4 +139,4 @@ function calculateDamage(baseDamage, attackerAtk, defenderDef){
 
 
 //CPU対戦モードかどうか
-const IS_CPU_MODE = false;
+let IS_CPU_MODE = false;
